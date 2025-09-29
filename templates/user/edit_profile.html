@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<section class="py-5" style="background-color: #f0f2f5;">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card shadow-lg border-0 rounded-4 p-5">
+          <h3 class="mb-4 text-primary">Edit Profile</h3>
+
+          <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <h5 class="mb-3 text-secondary">Basic Info</h5>
+            {{ jobseeker_form.as_p }}
+
+            <hr>
+            <h5 class="mb-3 text-secondary">Detailed Info</h5>
+            {{ profile_form.as_p }}
+
+            <div class="d-flex justify-content-end gap-2 mt-4">
+              <a href="{% url 'user:account' %}" class="btn btn-outline-secondary">Cancel</a>
+              <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

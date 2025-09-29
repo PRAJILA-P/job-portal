@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Hero Section / Page Title -->
+<section class="section-hero overlay inner-page bg-image d-flex align-items-center" 
+         style='background-image: url("{% static "images/hero_1.jpg" %}"); min-height: 300px;' 
+         id="home-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7">
+                <h1 class="text-white font-weight-bold mb-3">Sign Up / Login</h1>
+                <div class="custom-breadcrumbs">
+                    <a href="{% url 'user:index' %}" class="text-white">Home</a> 
+                    <span class="mx-2 slash">/</span>
+                    <span class="text-white"><strong>Log In</strong></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Login Form Section -->
+<section class="inner-page py-5" id="login-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card p-5 shadow-sm mt-5">
+                    <h2 class="text-center mb-4">Login</h2>
+                    <form method="POST" action="{% url 'user:login' %}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+                        </div>
+                        {% if messages %}
+    <div class="mt-3 text-center">
+        {% for message in messages %}
+            <div class="alert d-inline-block text-start" style=" color: #9c1321;">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+                        <button type="submit" class="btn btn-success w-100 py-2">Login</button>
+                    </form>
+                    <p class="mt-4 text-center">
+                        Don't have an account? <a href="{% url 'user:register' %}">Sign Up</a>
+                    </p>
+
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

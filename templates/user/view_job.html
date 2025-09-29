@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="section-hero overlay inner-page bg-image d-flex align-items-center"
+         style="background: url('{% static "images/hero_1.jpg" %}');
+                min-height: 250px; background-size: cover; background-position: center;">
+  <div class="container text-center">
+    <h1 class="text-white fw-bold display-5 mb-3">Available Jobs</h1>
+    <div class="custom-breadcrumbs">
+      <a href="{% url 'user:account' %}" class="text-white-50 text-decoration-none">Dashboard</a>
+      <span class="mx-2 text-white-50">/</span>
+      <span class="text-white fw-semibold">Jobs</span>
+    </div>
+  </div>
+</section>
+
+<!-- Job Listings with Sidebar -->
+<section class="py-5" style="background-color: #f8f9fa;">
+  <div class="container">
+    <div class="row">
+
+      <!-- Sidebar -->
+      <div class="col-lg-3 mb-4">
+        <div class="card shadow-lg border-0 rounded-4 p-4 sticky-top" style="top: 20px;">
+          <h5 class="fw-bold mb-3 text-primary">Navigation</h5>
+          <ul class="nav flex-column">
+            <li class="nav-item mb-1">
+              <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary active-link" 
+                 href="{% url 'user:addprofile' %}">
+                <i class="icon-edit me-2"></i> Add Profile
+              </a>
+            </li>
+            <li class="nav-item mb-1">
+              <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary active-link" 
+                 href="{% url 'user:view_jobs' %}">
+                <i class="icon-list me-2"></i> View Jobs
+              </a>
+            </li>
+            <li class="nav-item mb-1">
+              <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary active-link" 
+                 href="{% url 'user:addprofile' %}">
+                <i class="icon-list me-2"></i> Application Status
+              </a>
+            </li>
+            <li class="nav-item mb-1">
+              <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary" 
+                 href="{% url 'user:logout' %}">
+                <i class="icon-sign-out me-2"></i> Logout
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Jobs Section -->
+      <div class="col-lg-9">
+        <div class="row">
+          {% if jobs %}
+            {% for job in jobs %}
+              <div class="col-md-6 mb-4">
+                <div class="card shadow-sm border-0 rounded-4 h-100 job-card">
+                  <div class="card-body p-4 d-flex flex-column">
+
+                    <!-- Logo + Job Title -->
+                    <div class="d-flex align-items-center mb-3">
+                      {% if job.recruiter.profile.logo %}
+                        <img src="{{ job.recruiter.profile.logo.url }}" 
+                             alt="Company Logo" 
+                             class="rounded-circle me-3 shadow-sm" 
+                             style="width: 50px; height: 50px; object-fit: cover;">
+                      {% else %}
+                        <div class="bg-light rounded-circle d-flex align-items-center justify-content-center me-3 shadow-sm" 
+                             style="width: 50px; height: 50px;">
+                          <i class="fas fa-building text-dark fs-5"></i>
+                        </div>
+                      {% endif %}
+                      <div>
+                        <h6 class="fw-bold mb-0">
+                          <a href="{% url 'user:job_detail' job.id %}" 
+                             class="text-decoration-none job-title-link" 
+                             style="font-size: 22px; font-weight: bold;">
+                            {{ job.title }}
+                          </a>
+                        </h6>
+                        <small class="text-black">{{ job.recruiter.company_name }}</small>
+                      </div>
+                    </div>
+
+                    <!-- Basic Info -->
+                    <p class="text-black small mb-2">
+                      <i class="fas fa-map-marker-alt text-black me-1"></i> {{ job.location }}
+                      {% if job.job_type %}
+                        | <i class="fas fa-briefcase text-black me-1"></i> {{ job.get_job_type_display }}
+                      {% endif %}
+                    </p>
+
+                    <!-- Posted Date -->
+                    <p class="small text-black mb-3">
+                      <i class="fas fa-calendar-alt text-black me-1"></i> Posted: {{ job.posted_at|date:"M d, Y" }}
+                    </p>
+
+                    <!-- Action -->
+                    <div class="mt-auto">
+                      <a href="{% url 'user:job_detail' job.id %}" class="btn btn-outline-dark btn-sm rounded-pill">
+                        <i class="fas fa-eye me-1"></i> View Details
+                      </a>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          {% else %}
+            <div class="col-12 text-center py-5">
+              <p class="text-black fs-5">No jobs available at the moment.</p>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Custom CSS -->
+<style>
+  .job-card {
+    transition: all 0.3s ease-in-out;
+  }
+  .job-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+  }
+  .job-title-link {
+    color: #89ba16 !important;  /* Job title in green */
+  }
+  .job-title-link:hover {
+    text-decoration: underline;
+  }
+</style>
+
+{% endblock %}

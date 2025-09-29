@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="section-hero overlay inner-page bg-image" 
+         style="background-image: url('{% static "images/hero_1.jpg" %}'); min-height: 250px;">
+  <div class="container">
+    <div class="row align-items-center justify-content-center">
+      <div class="col-md-8 text-center">
+        <h1 class="text-white font-weight-bold">Add Profile Details</h1>
+        <div class="custom-breadcrumbs">
+          <a href="{% url 'user:account' %}">Dashboard</a> 
+          <span class="mx-2 slash">/</span>
+          <span class="text-white"><strong>Add Profile</strong></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Profile Form -->
+<section class="py-5" style="background-color: #f0f2f5;">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card shadow-lg border-0 rounded-4 p-5">
+          <h2 class="mb-4 text-dark">Complete Your Profile</h2>
+          <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <!-- Profile Picture -->
+            <div class="mb-3">
+              <label class="form-label fw-bold">Profile Picture</label>
+              <input type="file" name="profile_picture" class="form-control">
+            </div>
+
+            <!-- Bio (moved up, under picture) -->
+            <div class="mb-3">
+              <label class="form-label fw-bold">Bio</label>
+              <textarea name="bio" rows="3" class="form-control" placeholder="Write a short introduction"></textarea>
+            </div>
+
+            <!-- Basic Info -->
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">Date of Birth</label>
+                <input type="date" name="dob" class="form-control">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">Gender</label>
+                <select name="gender" class="form-select">
+                  <option value="">-- Select --</option>
+                  <option value="M">Male</option>
+                  <option value="F">Female</option>
+                  <option value="O">Other</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-bold">Address</label>
+              <input type="text" name="address" class="form-control">
+            </div>
+
+            <!-- Education & Certifications -->
+            <div class="mb-3">
+              <label class="form-label fw-bold">Education</label>
+              <textarea name="education" rows="2" class="form-control"></textarea>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-bold">Certifications</label>
+              <textarea name="certifications" rows="2" class="form-control"></textarea>
+            </div>
+
+            <!-- Skills -->
+            <div class="mb-3">
+              <label class="form-label fw-bold">Skills (comma separated)</label>
+              <input type="text" name="skills" class="form-control">
+            </div>
+
+            <!-- Job Preferences -->
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">Preferred Job</label>
+                <input type="text" name="preferred_job" class="form-control">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">Employment Type</label>
+                <select name="employment_type" class="form-select">
+                  <option value="">-- Select --</option>
+                  <option value="FT">Full-time</option>
+                  <option value="PT">Part-time</option>
+                  <option value="IN">Internship</option>
+                  <option value="CT">Contract</option>
+                  <option value="FR">Freelance</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-bold">Preferred Location</label>
+              <input type="text" name="preferred_location" class="form-control">
+            </div>
+
+            <!-- Experience -->
+            <div class="mb-3">
+              <label class="form-label fw-bold">Experience</label>
+              <textarea name="experience" rows="3" class="form-control"></textarea>
+            </div>
+
+            <!-- Resume -->
+            <div class="mb-3">
+              <label class="form-label fw-bold">Upload Resume</label>
+              <input type="file" name="resume" class="form-control">
+            </div>
+
+            <!-- Links -->
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">LinkedIn</label>
+                <input type="url" name="linkedin" class="form-control">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">GitHub</label>
+                <input type="url" name="github" class="form-control">
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-bold">Portfolio</label>
+              <input type="url" name="portfolio" class="form-control">
+            </div>
+
+            <!-- Submit -->
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary btn-lg">Save Profile</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

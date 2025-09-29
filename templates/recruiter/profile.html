@@ -1,0 +1,239 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="section-hero overlay inner-page bg-image" 
+         style='background-image: url("{% static "images/hero_1.jpg" %}"); min-height: 250px;'>
+  <div class="container">
+    <div class="row align-items-center justify-content-center">
+      <div class="col-md-7 text-center">
+        <h1 class="text-white font-weight-bold display-4 mb-0" 
+            style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">
+            Recruiter Dashboard
+        </h1>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5" style="background-color: #f0f2f5;">
+  <div class="container">
+    <div class="row">
+
+      <!-- Sidebar Navigation -->
+      <div class="col-lg-3 mb-4">
+        <div class="card shadow-lg border-0 rounded-4 p-4 sticky-top" style="top: 20px;">
+          <h5 class="fw-bold mb-3 text-primary">Navigation</h5>
+          <ul class="nav flex-column">
+            <li class="nav-item mb-1">
+              <a class="nav-link text-dark p-3 rounded-3 transition-ease-in hover-bg-primary active-link" 
+                 href="{% url 'job:postjob' %}">
+                <i class="icon-briefcase me-2"></i> Post Job
+              </a>
+            </li>
+            <li class="nav-item mb-1">
+              <a class="nav-link text-dark p-3 rounded-3 transition-ease-in hover-bg-primary" 
+                 href="{% url 'job:joblist' %}">
+                <i class="icon-list me-2"></i> Job Details
+              </a>
+            </li>
+            <li class="nav-item mb-1">
+              <a class="nav-link text-dark p-3 rounded-3 transition-ease-in hover-bg-primary" 
+                 href="{% url 'recruiter:login' %}">
+                <i class="icon-file-text-o me-2"></i> View Applications
+              </a>
+            </li>
+            <li class="nav-item mb-1">
+              <a class="nav-link text-dark p-3 rounded-3 transition-ease-in hover-bg-primary" 
+                 href="{% url 'recruiter:logout' %}">
+                <i class="icon-sign-out me-2"></i> Logout
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+     <!-- Main Content -->
+<div class="col-lg-9">
+  <div class="card shadow-lg border-0 rounded-4 p-5 transition-ease-in">
+
+    <h2 class="mb-4 pb-3 border-bottom text-dark">
+      <i class="icon-building me-2 text-primary"></i> 
+      {{ recruiter.company_name }}
+    </h2>
+
+    <!-- Recruiter Register Info -->
+    <ul class="list-group list-group-flush mb-5">
+
+      {% if recruiter.email %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <div class="text-start">
+          <i class="icon-envelope-o me-2 text-primary"></i>
+          <strong>Email:</strong>
+        </div>
+        <div class="text-end">{{ recruiter.email }}</div>
+      </li>
+      {% endif %}
+
+      {% if recruiter.phone %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <div class="text-start">
+          <i class="icon-phone me-2 text-primary"></i>
+          <strong>Phone:</strong>
+        </div>
+        <div class="text-end">{{ recruiter.phone }}</div>
+      </li>
+      {% endif %}
+
+      {% if recruiter.website %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <div class="text-start">
+          <i class="icon-globe me-2 text-primary"></i>
+          <strong>Website:</strong>
+        </div>
+        <div class="text-end">
+          <a href="{% if recruiter.website|slice:":4" != 'http' %}http://{{ recruiter.website }}{% else %}{{ recruiter.website }}{% endif %}" 
+             target="_blank" class="text-decoration-none text-primary">
+            {{ recruiter.website }}
+          </a>
+        </div>
+      </li>
+      {% endif %}
+
+      {% if recruiter.created_at %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <div class="text-start">
+          <i class="icon-calendar me-2 text-primary"></i>
+          <strong>Joined:</strong>
+        </div>
+        <div class="text-end">{{ recruiter.created_at|date:"M d, Y" }}</div>
+      </li>
+      {% endif %}
+    </ul>
+
+    <!-- Recruiter Profile Info -->
+    {% if recruiter.profile %}
+    <ul class="list-group list-group-flush mb-5">
+
+      {% if recruiter.profile.company_description %}
+      <li class="list-group-item">
+        <strong>Description:</strong>
+        <p>{{ recruiter.profile.company_description }}</p>
+      </li>
+      {% endif %}
+
+      {% if recruiter.profile.industry %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <strong>Industry:</strong>
+        <span>{{ recruiter.profile.industry }}</span>
+      </li>
+      {% endif %}
+
+      {% if recruiter.profile.location %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <strong>Location:</strong>
+        <span>{{ recruiter.profile.location }}</span>
+      </li>
+      {% endif %}
+
+      {% if recruiter.profile.linkedin %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <strong>LinkedIn:</strong>
+        <a href="{{ recruiter.profile.linkedin }}" target="_blank" class="text-decoration-none text-primary">
+          {{ recruiter.profile.linkedin }}
+        </a>
+      </li>
+      {% endif %}
+
+      {% if recruiter.profile.logo %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <strong>Logo:</strong>
+        <img src="{{ recruiter.profile.logo.url }}" alt="Logo" style="max-height: 80px;">
+      </li>
+      {% endif %}
+
+      {% if recruiter.profile.established_date %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <strong>Established:</strong>
+        <span>{{ recruiter.profile.established_date|date:"M d, Y" }}</span>
+      </li>
+      {% endif %}
+
+    </ul>
+    {% endif %}
+
+    <!-- Action Buttons -->
+    <div class="d-grid d-md-flex gap-3 pt-3 border-top">
+      <a href="{% url 'recruiter:edit_profile' recruiter.id %}" class="btn btn-primary btn-lg shadow-sm">
+        <i class="icon-edit me-2"></i> Edit Profile
+      </a>
+      <a href="{% url 'recruiter:logout' %}" class="btn btn-outline-secondary btn-lg shadow-sm">
+        <i class="icon-sign-out me-2"></i> Logout
+      </a>
+    </div>
+
+  </div>
+</div>
+
+
+    </div>
+  </div>
+</section>
+
+<style>
+  :root {
+    --bs-primary: #89ba16;
+    --bs-primary-dark: #7aab0d;
+    --bs-secondary: #6c757d;
+  }
+
+  .text-primary { color: var(--bs-primary) !important; }
+  .transition-ease-in { transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
+
+  .hover-bg-primary:hover {
+    background-color: var(--bs-primary) !important;
+    color: #fff !important;
+    text-decoration: none;
+    transform: translateX(3px);
+  }
+  .active-link {
+    background-color: rgba(137, 186, 22, 0.1); 
+    border-left: 5px solid var(--bs-primary); 
+    padding-left: calc(1rem - 5px) !important;
+  }
+
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
+  }
+
+  .btn-primary {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+  }
+  .btn-primary:hover {
+    background-color: var(--bs-primary-dark);
+    border-color: var(--bs-primary-dark);
+  }
+
+  .btn-outline-secondary {
+    color: var(--bs-secondary);
+    border-color: var(--bs-secondary);
+  }
+  .btn-outline-secondary:hover {
+    color: #fff;
+    background-color: var(--bs-secondary);
+  }
+
+  .list-group-item {
+    border-color: #e9ecef;
+    padding: 1.25rem 0;
+  }
+  .list-group-item strong {
+    color: #495057; 
+    font-weight: 600; 
+  }
+</style>
+
+{% endblock %}

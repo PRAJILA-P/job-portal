@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<section class="section-hero overlay inner-page bg-image" style='background-image: url("{% static "images/hero_1.jpg" %}");' id="home-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-7">
+            <h1 class="text-white font-weight-bold">Recruitr Sign Up/Login</h1>
+            <div class="custom-breadcrumbs">
+              <a href="{% url 'user:index' %}">Home</a> <span class="mx-2 slash">/</span>
+              <span class="text-white"><strong>Sign-up</strong></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+<section class="section-hero inner-page bg-image"
+         style='background-color: rgb(255, 255, 255);'
+         id="home-section">
+  <div class="container">
+    <div class="row justify-content-center">
+
+      <!-- Heading outside the card -->
+      <div class="col-12 text-center mb-4">
+        <h2 class="text-dark">Recruiter Register</h2>
+      </div>
+
+      <!-- Card -->
+      <div class="col-md-6 bg-white p-5 rounded shadow">
+        <!-- Plain HTML form -->
+        <form method="POST" action="{% url 'recruiter:register' %}">
+          {% csrf_token %}
+
+          <div class="form-group mb-3">
+            <label for="company_name">Company Name</label>
+            <input type="text" name="company_name" id="company_name"
+                   class="form-control" placeholder="Enter your company name" required>
+          </div>
+
+          <div class="form-group mb-3">
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email"
+                   class="form-control" placeholder="Enter your email" required>
+          </div>
+
+          
+
+          <div class="form-group mb-3">
+            <label for="phone">Phone</label>
+            <input type="text" name="phone" id="phone"
+                   class="form-control" placeholder="Enter phone number">
+          </div>
+
+          <div class="form-group mb-3">
+            <label for="website">Website</label>
+            <input type="url" name="website" id="website"
+                   class="form-control" placeholder="https://example.com">
+          </div>
+          <div class="form-group mb-3">
+  <label for="password">Password</label>
+  <input type="password" name="password" id="password"
+         class="form-control" placeholder="Enter a password" required>
+</div>
+
+<!-- Confirm Password field -->
+<div class="form-group mb-3">
+  <label for="confirm_password">Confirm Password</label>
+  <input type="password" name="confirm_password" id="confirm_password"
+         class="form-control" placeholder="Confirm your password" required>
+</div>
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+  {% endfor %}
+{% endif %}
+
+
+          <button type="submit" class="btn btn-success w-100">Register</button>
+        </form>
+
+        <p class="text-center mt-3">
+          Already have an account? <a href="{% url 'recruiter:login' %}">Login</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

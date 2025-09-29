@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="section-hero overlay inner-page bg-image" 
+         style='background-image: url("{% static "images/hero_1.jpg" %}"); min-height: 250px;'>
+  <div class="container">
+    <div class="row align-items-center justify-content-center">
+      <div class="col-md-7 text-center">
+        <h1 class="text-white font-weight-bold display-4 mb-0" 
+            style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">
+            My Profile
+        </h1>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="py-5" style="background-color: #f0f2f5;">
+  <div class="container">
+    <div class="row justify-content-center">
+       <div class="col-lg-3 mb-4">
+        <div class="card shadow-lg border-0 rounded-4 p-4 sticky-top" style="top: 20px;">
+          <h5 class="fw-bold mb-3 text-primary">Navigation</h5>
+          <ul class="nav flex-column">
+            <li class="nav-item mb-1">
+              <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary active-link" 
+                 href="{% url 'user:addprofile' %}">
+                <i class="icon-edit me-2"></i> Add Profile
+              </a>
+            </li>
+             <li class="nav-item mb-1">
+              <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary active-link" 
+                 href="{% url 'user:view_jobs' %}">
+                <i class="icon-list me-2"></i> View Jobs
+              </a>
+            </li>
+            <li class="nav-item mb-1">
+              <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary" 
+                 href="{% url 'user:logout' %}">
+                <i class="icon-sign-out me-2"></i> Logout
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-9">
+        
+
+        <div class="card shadow-lg border-0 rounded-4 p-5">
+
+          <!-- Profile Header -->
+          <div class="text-center mb-5">
+            {% if jobseeker.profile.profile_picture %}
+              <img src="{{ jobseeker.profile.profile_picture.url }}" alt="Profile Picture"
+                   class="rounded-circle shadow" style="width: 120px; height: 120px; object-fit: cover;">
+            {% endif %}
+            
+            <h3 class="mt-3 mb-1">
+              <i class="icon-user text-success me-2"></i>{{ jobseeker.full_name }}
+            </h3>
+
+            {% if jobseeker.email or jobseeker.phone %}
+              <p class="text-muted">
+                {% if jobseeker.email %}
+                  <i class="icon-envelope text-success me-1"></i>{{ jobseeker.email }}
+                {% endif %}
+                {% if jobseeker.phone %}
+                  | <i class="icon-phone text-success me-1"></i>{{ jobseeker.phone }}
+                {% endif %}
+              </p>
+            {% endif %}
+
+            {% if jobseeker.created_at %}
+              <p class="text-muted">
+                <i class="icon-calendar text-success me-1"></i> Joined: {{ jobseeker.created_at|date:"M d, Y" }}
+              </p>
+            {% endif %}
+          </div>
+
+          <!-- Profile Details (Table-like) -->
+         <div class="table-responsive">
+  <table class="table table-borderless">
+    <tbody>
+      {% if jobseeker.profile.bio %}
+      <tr>
+        <th>Bio:</th>
+        <td>{{ jobseeker.profile.bio }}</td>
+      </tr>
+      {% endif %}
+
+      {% if jobseeker.profile.address %}
+      <tr>
+        <th>Address:</th>
+        <td>{{ jobseeker.profile.address }}</td>
+      </tr>
+      {% endif %}
+
+      {% if jobseeker.profile.dob %}
+      <tr>
+        <th>Date of Birth:</th>
+        <td>{{ jobseeker.profile.dob|date:"M d, Y" }}</td>
+      </tr>
+      {% endif %}
+
+      {% if jobseeker.profile.gender %}
+      <tr>
+        <th>Gender:</th>
+        <td>{{ jobseeker.profile.get_gender_display }}</td>
+      </tr>
+      {% endif %}
+
+      {% if jobseeker.profile.education %}
+      <tr>
+        <th>Education:</th>
+        <td>{{ jobseeker.profile.education }}</td>
+      </tr>
+      {% endif %}
+
+      {% if jobseeker.profile.certifications %}
+      <tr>
+        <th>Certifications:</th>
+        <td>{{ jobseeker.profile.certifications }}</td>
+      </tr>
+      {% endif %}
+
+      {% if jobseeker.profile.preferred_job %}
+      <tr>
+        <th>Preferred Job:</th>
+        <td>{{ jobseeker.profile.preferred_job }}</td>
+      </tr>
+      {% endif %}
+
+      {% if jobseeker.profile.employment_type %}
+      <tr>
+        <th>Employment Type:</th>
+        <td>{{ jobseeker.profile.get_employment_type_display }}</td>
+      </tr>
+      {% endif %}
+
+      {% if jobseeker.profile.preferred_location %}
+      <tr>
+        <th>Preferred Location:</th>
+        <td>{{ jobseeker.profile.preferred_location }}</td>
+      </tr>
+      {% endif %}
+
+      {% if jobseeker.profile.resume %}
+      <tr>
+        <th>Resume:</th>
+        <td><a href="{{ jobseeker.profile.resume.url }}" target="_blank" class="text-success">Download</a></td>
+      </tr>
+      {% endif %}
+
+      {% if jobseeker.profile.skills %}
+      <tr>
+        <th>Skills:</th>
+        <td>{{ jobseeker.profile.skills }}</td>
+      </tr>
+      {% endif %}
+
+      {% if jobseeker.profile.linkedin %}
+      <tr>
+        <th>LinkedIn:</th>
+        <td><a href="{{ jobseeker.profile.linkedin }}" target="_blank" class="text-success">{{ jobseeker.profile.linkedin }}</a></td>
+      </tr>
+      {% endif %}
+
+      {% if jobseeker.profile.github %}
+      <tr>
+        <th>GitHub:</th>
+        <td><a href="{{ jobseeker.profile.github }}" target="_blank" class="text-success">{{ jobseeker.profile.github }}</a></td>
+      </tr>
+      {% endif %}
+
+      {% if jobseeker.profile.portfolio %}
+      <tr>
+        <th>Portfolio:</th>
+        <td><a href="{{ jobseeker.profile.portfolio }}" target="_blank" class="text-success">{{ jobseeker.profile.portfolio }}</a></td>
+      </tr>
+      {% endif %}
+
+      {% if jobseeker.profile.experience %}
+      <tr>
+        <th>Experience:</th>
+        <td>{{ jobseeker.profile.experience }}</td>
+      </tr>
+      {% endif %}
+    </tbody>
+  </table>
+</div>
+
+
+          <!-- Action Buttons -->
+          <div class="d-grid d-md-flex gap-3 pt-4 border-top">
+            <a href="{% url 'user:editprofile' %}" class="btn btn-primary shadow-sm">
+              <i class="icon-edit me-2"></i> Edit Profile
+            </a>
+            <a href="{% url 'user:logout' %}" class="btn btn-outline-secondary shadow-sm">
+              <i class="icon-sign-out me-2"></i> Logout
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
