@@ -38,7 +38,13 @@
             <li class="nav-item mb-1">
               <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary active-link" 
                  href="{% url 'user:view_jobs' %}">
-                <i class="icon-list me-2"></i> View Jobs
+                <i class="icon-list me-2"></i>View Jobs 
+              </a>
+            </li>
+            <li class="nav-item mb-1">
+              <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary active-link" 
+                 href="{% url 'user:application_list' %}">
+                <i class="icon-list me-2"></i> Application Status
               </a>
             </li>
             <li class="nav-item mb-1">
@@ -140,7 +146,7 @@
 
           <!-- Apply Button -->
           <div class="mt-4">
-            <a href="#" class="btn btn-success btn-lg rounded-pill">Apply Now</a>
+            <a href="{% url 'job:apply_job' job.id %}" class="btn btn-success btn-lg rounded-pill">Apply Now</a>
           </div>
 
         </div>

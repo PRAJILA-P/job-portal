@@ -9,13 +9,13 @@
   <div class="container">
     <div class="row">
       <div class="col-md-7">
-        <h1 class="text-white font-weight-bold">Job</h1>
+        <h1 class="text-white font-weight-bold">Job Application</h1>
         <div class="custom-breadcrumbs">
           <a href="{% url 'recruiter:profile' %}" class="text-white-50 text-decoration-none">Dashboard</a> 
           <span class="mx-2 text-white-50">/</span>
-          <a href="{% url 'job:joblist' %}" class="text-white-50 text-decoration-none">Job</a> 
+          <a href="{% url 'job:joblist' %}" class="text-white-50 text-decoration-none">Jobs</a> 
           <span class="mx-2 text-white-50">/</span>
-          <span class="text-white fw-semibold">Job List</span>
+          <span class="text-white fw-semibold">Job Application</span>
         </div>
       </div>
     </div>
@@ -29,7 +29,7 @@
 
       <!-- Sidebar -->
       <div class="col-lg-3 mb-4">
-        <div class="card shadow-lg border-0 rounded-4 p-4 sticky-top" style="top: 20px;">
+        <div class="card shadow-lg border-0 rounded-4 p-4 sticky-top">
           <h5 class="fw-bold mb-3 text-primary">Navigation</h5>
           <ul class="nav flex-column">
             <li class="nav-item mb-2">
@@ -38,7 +38,7 @@
               </a>
             </li>
             <li class="nav-item mb-2">
-              <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary " href="{% url 'job:joblist' %}">
+              <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary" href="{% url 'job:joblist' %}">
                 <i class="icon-list me-2"></i> Job Details
               </a>
             </li>
@@ -56,51 +56,69 @@
         </div>
       </div>
 
-      <!-- Job Listings -->
+      <!-- Job Applications / Main Column -->
       <div class="col-lg-9">
-        <h2 class="mb-4">My Job Listings</h2>
-        {% if jobs %}
-          <div class="list-group">
-            {% for job in jobs %}
-            <a href="{% url 'job:job_detail' job.id %}" class="list-group-item mb-3 list-group-item-action shadow-sm rounded-4 text-decoration-none" style="color: black;">
-              <h4 class="fw-bold">{{ job.title }}</h4>
-              <p class="mb-1">{{ job.description|truncatewords:20 }}</p>
-              {% if job.requirements %}
-              <p class="mb-1"><strong>Requirements:</strong> {{ job.requirements|truncatewords:10 }}</p>
-              {% endif %}
-              <p class="mb-0"><strong>Location:</strong> {{ job.location }}</p>
-            </a>
+        <div class="card shadow-sm border-0 rounded-4 p-4">
+          <h2 class="mb-4">Job Applications</h2>
+
+          {% if applications %}
+          <div class="row">
+            {% for app in applications %}
+            <div class="col-md-4 mb-4">
+  <div class="card shadow-sm h-100">
+    <div class="card-body">
+      <h5 class="card-title">{{ app.job.title }}</h5>
+      <p class="card-text"><strong>Applicant:</strong> {{ app.job_seeker.email }}</p>
+      <p class="card-text">
+  <strong>Status:</strong>
+  {% if app.status == "Applied" %}
+    Pending
+  {% else %}
+    {{ app.status }}
+  {% endif %}
+</p>
+
+      <a href="{% url 'recruiter:application_detail' app.id %}" class="btn btn-primary btn-sm">View Details</a>
+    </div>
+  </div>
+</div>
+
             {% endfor %}
           </div>
-        {% else %}
-          <p>You have not posted any jobs yet.</p>
-        {% endif %}
+          {% else %}
+          <p class="text-center">No applications found for your jobs.</p>
+          {% endif %}
+
+        </div>
       </div>
 
     </div>
   </div>
 </section>
 
-<!-- Sidebar & List Styles -->
+<!-- Sidebar Styles -->
 <style>
   .sticky-top {
     position: sticky;
     top: 20px;
   }
+
   .hover-bg-primary:hover {
     background-color: #f0f8ff;
     transition: 0.3s ease-in-out;
   }
+
   .nav-link.active-link {
     background-color: #89ba16;
     color: white !important;
   }
-  .list-group-item {
-    transition: all 0.3s ease-in-out;
+
+  .nav-link i {
+    width: 20px;
   }
-  .list-group-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+
+  .nav-link {
+    font-weight: 500;
   }
 </style>
 

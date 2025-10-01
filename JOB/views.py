@@ -1,8 +1,10 @@
 from django.shortcuts import get_object_or_404, redirect, render
 
-from JOB.models import Job
+from JOB.models import Job, JobApplication
 from RECRUITER.models import RecruiterRegister
 from django.contrib.auth.decorators import login_required
+
+from USER.models import JobSeeker
 
 # Create your views here.
 
@@ -83,3 +85,36 @@ def delete_job(request, job_id):
         job.delete()
     
     return redirect('job:joblist')
+
+def apply_job(request, job_id):
+    # Manual authentication check
+    if 'jobseeker_id' not in request.session:
+        return redirect('user:login')  # Redirect if not logged in
+
+    try:
+        job_seeker = JobSeeker.objects.get(id=request.session['jobseeker_id'])
+    except JobSeeker.DoesNotExist:
+        return redirect('user:login')
+
+    job = get_object_or_404(Job, id=job_id)
+
+    if request.method == "POST":
+        phone_number = request.POST.get('phone_number')
+        cover_letter = request.POST.get('cover_letter')
+
+        # Create JobApplication
+        JobApplication.objects.create(
+            job_seeker=job_seeker,
+            job=job,
+            phone_number=phone_number,
+            cover_letter=cover_letter,
+            status='Applied'
+        )
+
+        return redirect('user:job_detail', job_id=job.id)  # Redirect to dashboard
+
+    context = {
+        'job': job,
+        'job_seeker': job_seeker,
+    }
+    return render(request, 'user/apply_job.html', context)

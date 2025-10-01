@@ -1,17 +1,159 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
-
+from django.core.paginator import Paginator
 from USER.forms import JobSeekerForm, JobSeekerProfileForm
-from JOB.models import Job
+from JOB.models import Job, JobApplication
 from .models import JobSeeker, JobSeekerProfile
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import logout
+from django.db.models import Q
 
+# from RECRUITER.models import Region
 # Create your views here.
 
 
+# def index(request):
+#     return render(request,"user/home.html")
+# def index(request):
+#     job_list = Job.objects.all().order_by('-id')  # latest jobs first
+#     paginator = Paginator(job_list, 5)           # 5 jobs per page
+
+#     page_number = request.GET.get('page')
+#     page_obj = paginator.get_page(page_number)   # handles invalid page numbers
+
+#     return render(request, "user/home.html", {"jobs": page_obj})
+
+
+
+# def index(request):
+#     query = request.GET.get('query', '')       # job title or company name
+#     location = request.GET.get('location', '') # location of the job
+#     job_type = request.GET.get('job_type', '') # job type filter
+
+#     # Start with active jobs
+#     job_list = Job.objects.filter(is_active=True).order_by('-id')
+
+#     # Filter by job title or company
+#     if query:
+#         job_list = job_list.filter(
+#             Q(title__icontains=query) | Q(recruiter__company_name__icontains=query)
+#         )
+
+#     # Filter by location
+#     if location:
+#         job_list = job_list.filter(location__icontains=location)
+
+#     # Filter by job type
+#     if job_type:
+#         job_list = job_list.filter(job_type=job_type)
+
+#     # Pagination
+#     paginator = Paginator(job_list, 5)
+#     page_number = request.GET.get('page')
+#     page_obj = paginator.get_page(page_number)
+
+#     # Job type dropdown
+#     job_types = [choice[1] for choice in Job._meta.get_field('job_type').choices]
+
+#     # Optional: you can create a list of unique locations from existing jobs
+#     locations = Job.objects.values_list('location', flat=True).distinct()
+
+#     context = {
+#         'jobs': page_obj,
+#         'locations': locations,
+#         'job_types': job_types,
+#         'selected_query': query,
+#         'selected_location': location,
+#         'selected_job_type': job_type,
+#     }
+
+#     return render(request, 'user/home.html', context)
+
+# def index(request):
+#     query = request.GET.get('query', '')       # job title or company name
+#     location = request.GET.get('location', '') # location of the job
+#     job_type = request.GET.get('job_type', '') # job type filter
+
+#     # Start with active jobs
+#     job_list = Job.objects.filter(is_active=True).order_by('-id')
+
+#     # Title or company filter
+#     if query:
+#         job_list = job_list.filter(
+#             Q(title__icontains=query) | Q(recruiter__company_name__icontains=query)
+#         )
+
+#     # Location filter (AND logic)
+#     if location:
+#         job_list = job_list.filter(location__icontains=location)
+
+#     # Job type filter (AND logic)
+#     if job_type:
+#         job_list = job_list.filter(job_type=job_type)
+
+#     # Pagination
+#     paginator = Paginator(job_list, 5)
+#     page_number = request.GET.get('page')
+#     page_obj = paginator.get_page(page_number)
+
+#     # Dropdown data
+#     job_types = [choice[1] for choice in Job._meta.get_field('job_type').choices]
+#     locations = Job.objects.values_list('location', flat=True).distinct()
+
+#     context = {
+#         'jobs': page_obj,
+#         'locations': locations,
+#         'job_types': job_types,
+#         'selected_query': query,
+#         'selected_location': location,
+#         'selected_job_type': job_type,
+#     }
+
+#     return render(request, 'user/home.html', context)
+
+
 def index(request):
-    return render(request,"user/home.html")
+    query = request.GET.get('query', '')       # job title or company name
+    location = request.GET.get('location', '') # location
+    job_type = request.GET.get('job_type', '') # job type
+
+    # Start with active jobs
+    job_list = Job.objects.filter(is_active=True).order_by('-id')
+
+    # Filter by title OR company
+    if query:
+        job_list = job_list.filter(
+            Q(title__icontains=query) | Q(recruiter__company_name__icontains=query)
+        )
+
+    # Filter by location
+    if location:
+        job_list = job_list.filter(location__icontains=location)
+
+    # Filter by job type (this works now because we use the database value)
+    if job_type:
+        job_list = job_list.filter(job_type=job_type)
+
+    # Pagination
+    paginator = Paginator(job_list, 5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    # Dropdown data
+    job_types_choices = Job._meta.get_field('job_type').choices
+    locations = Job.objects.values_list('location', flat=True).distinct()
+
+    context = {
+        'jobs': page_obj,
+        'locations': locations,
+        'job_types_choices': job_types_choices,
+        'selected_query': query,
+        'selected_location': location,
+        'selected_job_type': job_type,
+    }
+
+    return render(request, 'user/home.html', context)
+
 
 def login(request):
     if request.method == 'POST':
@@ -156,3 +298,25 @@ def view_jobs(request):
 def job_detail(request, job_id):
     job = get_object_or_404(Job, id=job_id, is_active=True)
     return render(request, 'user/job_detail.html', {'job': job})
+
+def application_list(request):
+    jobseeker_id = request.session.get('jobseeker_id')
+    if not jobseeker_id:
+        return redirect('user:login')
+
+    jobseeker = get_object_or_404(JobSeeker, id=jobseeker_id)
+
+    # Only jobs this user applied for
+    applications = JobApplication.objects.filter(job_seeker=jobseeker).order_by('-applied_on')
+
+    return render(request, 'user/application_list.html', {'applications': applications})
+
+def application_detail(request, pk):
+    jobseeker_id = request.session.get('jobseeker_id')
+    if not jobseeker_id:
+        return redirect('user:login')
+
+    jobseeker = get_object_or_404(JobSeeker, id=jobseeker_id)
+    application = get_object_or_404(JobApplication, pk=pk, job_seeker=jobseeker)
+
+    return render(request, 'user/application_details.html', {'application': application})

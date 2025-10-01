@@ -1,6 +1,8 @@
 from django.shortcuts import get_object_or_404, render,redirect,HttpResponse
 from django.contrib import messages
 
+from JOB.models import JobApplication
+
 from . models import RecruiterProfile, RecruiterRegister
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.hashers import make_password
@@ -110,5 +112,74 @@ def edit_profile(request, recruiter_id):
         'profile': profile
     })
 
+def view_applications(request):
+    # Get recruiter ID from session
+    recruiter_id = request.session.get('recruiter_id')
+    if not recruiter_id:
+        return redirect('recruiter:login')  # Redirect if not logged in
+
+    # Get recruiter instance
+    recruiter = get_object_or_404(RecruiterRegister, id=recruiter_id)
+
+    # Filter only applications for jobs posted by this recruiter
+    applications = JobApplication.objects.filter(
+        job__recruiter=recruiter
+    ).select_related('job_seeker', 'job_seeker__profile', 'job')
+
+    
+
+    context = {
+        'applications': applications
+    }
+    return render(request, 'recruiter/ViewApplication.html', context)
+
+# def view_applications(request):
+#     # Get recruiter id from session
+#     recruiter_id = request.session.get('recruiter_id')
+#     if not recruiter_id:
+#         return redirect('recruiter:login')
+
+#     recruiter = get_object_or_404(RecruiterRegister, id=recruiter_id)
+
+#     # Filter only applications for this recruiter
+#     applications = JobApplication.objects.filter(job__recruiter=recruiter).select_related('job_seeker', 'job_seeker__profile', 'job')
+
+#     context = {
+#         'applications': applications
+#     }
+#     return render(request, 'recruiter/view_applications.html', context)
 
 
+def application_detail(request, application_id):
+    # Get recruiter id from session
+    recruiter_id = request.session.get('recruiter_id')
+    if not recruiter_id:
+        return redirect('recruiter:login')
+
+    recruiter = get_object_or_404(RecruiterRegister, id=recruiter_id)
+
+    # Make sure the application belongs to this recruiter
+    application = get_object_or_404(JobApplication, id=application_id, job__recruiter=recruiter)
+
+    context = {
+        'application': application
+    }
+    return render(request, 'recruiter/Application_details.html', context)
+
+
+def update_application_status(request, application_id):
+    recruiter_id = request.session.get('recruiter_id')
+    if not recruiter_id:
+        return redirect('recruiter:login')
+
+    recruiter = get_object_or_404(RecruiterRegister, id=recruiter_id)
+    application = get_object_or_404(JobApplication, id=application_id, job__recruiter=recruiter)
+
+    if request.method == "POST":
+        application.recruiter_notes = request.POST.get('recruiter_notes', '')
+        application.status = request.POST.get('status', 'Pending')
+        application.save()
+        messages.success(request, "Application updated successfully!")
+        return redirect('recruiter:application_detail', application_id=application.id)
+
+    return redirect('recruiter:application_detail', application_id=application.id)

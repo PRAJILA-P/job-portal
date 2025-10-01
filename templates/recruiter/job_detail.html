@@ -2,46 +2,75 @@
 {% load static %}
 
 {% block content %}
+
+<!-- Hero Section -->
 <section class="section-hero overlay inner-page bg-image" 
-         style="background-image: url('{% static "images/hero_1.jpg" %}');" id="home-section">
+         style="background-image: url('{% static "images/hero_1.jpg" %}'); min-height: 250px;" id="home-section">
   <div class="container">
     <div class="row">
       <div class="col-md-7">
         <h1 class="text-white font-weight-bold">Job Details</h1>
         <div class="custom-breadcrumbs">
-          <a href="{% url 'recruiter:profile' %}">Dashboard</a> <span class="mx-2 slash">/</span>
-          <a href="{% url 'job:joblist' %}">Jobs</a> <span class="mx-2 slash">/</span>
-          <span class="text-white"><strong>{{ job.title }}</strong></span>
+          <a href="{% url 'recruiter:profile' %}" class="text-white-50 text-decoration-none">Dashboard</a> 
+          <span class="mx-2 text-white-50">/</span>
+          <a href="{% url 'job:joblist' %}" class="text-white-50 text-decoration-none">Jobs</a> 
+          <span class="mx-2 text-white-50">/</span>
+          <span class="text-white fw-semibold">{{ job.title }}</span>
         </div>
       </div>
     </div>
   </div>
 </section>
 
+<!-- Main Content -->
 <section class="container mt-5">
-    <div class="card p-4" style="color: black; margin-bottom: 50px;">
-        <!-- Buttons at the top -->
-        <!-- Buttons at the top -->
-<div class="d-flex justify-content-between mb-3">
-    <!-- Left: Back to Jobs button -->
-    <a href="{% url 'job:joblist' %}" class="btn" 
-       style="background-color: #89ba16; color: white; border: none; padding: 10px 20px;">
-       &larr; Back to Jobs
-    </a>
+  <div class="row">
 
-    <!-- Right: Edit and Delete buttons -->
-    <div>
-        <a href="{% url 'job:edit_job' job.id %}" class="btn me-2" 
-           style="background-color: #89ba16; color: white; border: none; padding: 10px 20px;">Edit</a>
-        <a href="{% url 'job:delete_job' job.id %}" class="btn" 
-           style="background-color: #f00707; color: white; border: none; padding: 10px 20px;"
-           onclick="return confirm('Are you sure you want to delete this job?');">Delete</a>
+    <!-- Sidebar -->
+    <div class="col-lg-3 mb-4">
+      <div class="card shadow-lg border-0 rounded-4 p-4 sticky-top" style="top: 20px;">
+        <h5 class="fw-bold mb-3 text-primary">Navigation</h5>
+        <ul class="nav flex-column">
+          <li class="nav-item mb-2">
+            <a class="nav-link text-dark p-3 rounded-3 hover-bg-light" href="{% url 'job:postjob' %}">
+              <i class="icon-briefcase me-2"></i> Post Job
+            </a>
+          </li>
+          <li class="nav-item mb-2">
+            <a class="nav-link text-dark p-3 rounded-3 hover-bg-light" href="{% url 'job:joblist' %}">
+              <i class="icon-list me-2"></i> Job Details
+            </a>
+          </li>
+          <li class="nav-item mb-2">
+            <a class="nav-link text-dark p-3 rounded-3 hover-bg-light" href="{% url 'recruiter:view_applications' %}">
+              <i class="icon-file-text-o me-2"></i> View Applications
+            </a>
+          </li>
+          <li class="nav-item mb-2">
+            <a class="nav-link text-dark p-3 rounded-3 hover-bg-light" href="{% url 'recruiter:logout' %}">
+              <i class="icon-sign-out me-2"></i> Logout
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
-</div>
 
+    <!-- Job Details -->
+    <div class="col-lg-9">
+      <div class="card p-4 shadow-sm rounded-4 mb-5">
+        
+        <!-- Top Buttons -->
+        <div class="d-flex justify-content-between mb-4 flex-wrap">
+          <a href="{% url 'job:joblist' %}" class="btn btn-secondary mb-2">&larr; Back to Jobs</a>
+          <div class="mb-2">
+            <a href="{% url 'job:edit_job' job.id %}" class="btn btn-success me-2">Edit</a>
+            <a href="{% url 'job:delete_job' job.id %}" class="btn btn-danger"
+               onclick="return confirm('Are you sure you want to delete this job?');">Delete</a>
+          </div>
+        </div>
 
-
-        <h2 style="font-weight: bold;">{{ job.title }}</h2>
+        <!-- Job Information -->
+        <h2 class="fw-bold mb-3">{{ job.title }}</h2>
         
         <p><strong>Description:</strong></p>
         <p>{{ job.description }}</p>
@@ -51,11 +80,10 @@
         {% endif %}
         
         <p><strong>Roles and Responsibilities:</strong> {{ job.roles_and_responsibilities }}</p>
-
         <p><strong>Preferred Education:</strong> {{ job.education_required }}</p>
         
         {% if job.salary %}
-        <p><strong>Salary:</strong> {{ job.salary }}</p>
+        <p><strong>Salary:</strong> ₹{{ job.salary }}</p>
         {% endif %}
         
         {% if job.location %}
@@ -67,13 +95,28 @@
         {% if job.experience_required %}
         <p><strong>Experience Required:</strong> {{ job.experience_required }} Years</p>
         {% endif %}
-
+        
         <p><strong>Posted on:</strong> {{ job.posted_at|date:"M d, Y" }}</p>
         {% if job.deadline %}
         <p><strong>Deadline:</strong> {{ job.deadline|date:"M d, Y" }}</p>
         {% endif %}
-        
-        <!-- <a href="{% url 'job:joblist' %}" class="btn btn-primary mt-3">Back to Jobs</a> -->
+
+      </div>
     </div>
+
+  </div>
 </section>
+
+<!-- Styles -->
+<style>
+  .sticky-top {
+    position: sticky;
+    top: 20px;
+  }
+  .hover-bg-light:hover {
+    background-color: #f0f8ff;
+    transition: 0.3s ease-in-out;
+  }
+</style>
+
 {% endblock %}

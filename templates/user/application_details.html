@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="section-hero overlay inner-page bg-image" 
+         style='background-image: url("{% static "images/hero_1.jpg" %}"); min-height: 250px;'>
+  <div class="container">
+    <div class="row align-items-center justify-content-center">
+      <div class="col-md-7 text-center">
+        <h1 class="text-white font-weight-bold display-4 mb-0" 
+            style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">
+            Application Details
+        </h1>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Main Section -->
+<section class="py-5" style="background-color: #f0f2f5;">
+  <div class="container">
+    <div class="row justify-content-center">
+
+      <!-- Sidebar -->
+      <div class="col-lg-3 mb-4">
+        <div class="card shadow-lg border-0 rounded-4 p-4 sticky-top" style="top: 20px;">
+          <h5 class="fw-bold mb-3 text-primary">Navigation</h5>
+          <ul class="nav flex-column">
+            <li class="nav-item mb-1">
+              <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary" href="{% url 'user:addprofile' %}">
+                <i class="icon-edit me-2"></i> Add Profile
+              </a>
+            </li>
+            <li class="nav-item mb-1">
+              <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary" href="{% url 'user:view_jobs' %}">
+                <i class="icon-list me-2"></i> View Jobs
+              </a>
+            </li>
+            <li class="nav-item mb-1">
+              <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary active-link" href="{% url 'user:application_list' %}">
+                <i class="icon-list me-2"></i> Application Status
+              </a>
+            </li>
+            <li class="nav-item mb-1">
+              <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary" href="{% url 'user:logout' %}">
+                <i class="icon-sign-out me-2"></i> Logout
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Application Details -->
+      <div class="col-lg-9">
+        <div class="card shadow-lg border-0 rounded-4 p-4">
+          <div class="card-body">
+            <a href="{% url 'user:application_list' %}" class="btn btn-secondary mb-2" style="width: 100px;">&larr; Back</a><br><br>
+
+            <!-- Job Info -->
+            <div class="d-flex align-items-center mb-4">
+              {% if application.job.recruiter.profile.logo %}
+                <img src="{{ application.job.recruiter.profile.logo.url }}" 
+                     alt="{{ application.job.recruiter.company_name }}" 
+                     class="me-3 border rounded-3" 
+                     style="height:70px; width:70px; object-fit:cover;">
+              {% endif %}
+              <div>
+                <h3 class="fw-bold mb-1">{{ application.job.title }}</h3>
+                <p class="text-muted mb-0">{{ application.job.recruiter.company_name }}</p>
+              </div>
+            </div>
+
+            <hr>
+
+            <!-- Cover Letter -->
+            {% if application.cover_letter %}
+              <h5 class="fw-bold text-primary">Cover Letter</h5>
+              <p class="mb-4">{{ application.cover_letter }}</p>
+            {% endif %}
+
+            <!-- User Email -->
+            <h5 class="fw-bold text-primary">Applicant Email</h5>
+            <p class="mb-4">{{ application.job_seeker.email }}</p>
+
+            <!-- Applied On -->
+            <h5 class="fw-bold text-primary">Applied On</h5>
+            <p class="mb-4">{{ application.applied_on|date:"F j, Y, g:i a" }}</p>
+
+            <!-- Recruiter Notes -->
+            {% if application.recruiter_notes %}
+              <h5 class="fw-bold text-primary">Recruiter Notes</h5>
+              <p class="mb-4">{{ application.recruiter_notes }}</p>
+            {% endif %}
+
+            <!-- Status -->
+            <h5 class="fw-bold text-primary">Status</h5>
+            {% if application.status == "Pending" %}
+              <span class="badge bg-warning text-dark fs-6 py-2 px-3">{{ application.status }}</span>
+            {% elif application.status == "Shortlisted" %}
+              <span class="badge bg-info text-dark fs-6 py-2 px-3">{{ application.status }}</span>
+            {% elif application.status == "Rejected" %}
+              <span class="badge bg-danger text-white fs-6 py-2 px-3">{{ application.status }}</span>
+            {% elif application.status == "Interview" %}
+              <span class="badge bg-primary text-white fs-6 py-2 px-3">{{ application.status }}</span>
+            {% elif application.status == "Hired" %}
+              <span class="badge bg-success text-white fs-6 py-2 px-3">{{ application.status }}</span>
+            {% else %}
+              <span class="badge bg-secondary text-white fs-6 py-2 px-3">{{ application.status }}</span>
+            {% endif %}
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}

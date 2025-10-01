@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="section-hero overlay inner-page bg-image" 
+         style="background-image: url('{% static "images/hero_1.jpg" %}'); min-height: 250px;">
+  <div class="container">
+    <div class="row align-items-center justify-content-center">
+      <div class="col-md-8 text-center">
+        <h1 class="text-white font-weight-bold">Apply Job</h1>
+        <div class="custom-breadcrumbs">
+          <a href="{% url 'user:account' %}">Dashboard</a> 
+          <span class="mx-2 slash">/</span>
+          <span class="text-white"><strong>Apply job</strong></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container mt-5">
+  <div class="card p-4">
+    <h3>Apply for: {{ job.title }}</h3>
+    <p><strong>Company:</strong> {{ job.recruiter.company_name }}</p>
+
+    <form method="POST">
+      {% csrf_token %}
+
+      <!-- Job Seeker Name (read-only) -->
+      <div class="mb-3">
+        <label for="name" class="form-label">Full Name</label>
+        <input type="text" class="form-control" id="name" 
+               value="{{ job_seeker.full_name }}" readonly>
+      </div>
+
+      <!-- Job Seeker Email (read-only) -->
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" 
+               value="{{ job_seeker.email }}" readonly>
+      </div>
+      
+      <!-- Phone number (editable) -->
+      <div class="mb-3">
+        <label for="phone_number" class="form-label">Phone Number</label>
+        <input type="text" class="form-control" id="phone_number" name="phone_number" 
+               value="{{ job_seeker.phone }}" placeholder="Enter phone number">
+      </div>
+
+      <!-- Cover letter -->
+      <div class="mb-3">
+        <label for="cover_letter" class="form-label">Cover Letter</label>
+        <textarea class="form-control" id="cover_letter" name="cover_letter" rows="5"></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Apply</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="section-hero overlay inner-page bg-image" 
+         style="background-image: url('{% static "images/hero_1.jpg" %}');" id="home-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-7">
+        <h1 class="text-white font-weight-bold">Application Details</h1>
+        <div class="custom-breadcrumbs">
+          <a href="{% url 'recruiter:profile' %}">Dashboard</a> <span class="mx-2 slash">/</span>
+          <a href="{% url 'recruiter:view_applications' %}">Applications</a> <span class="mx-2 slash">/</span>
+          <span class="text-white"><strong>{{ application.job.title }} - {{ application.job_seeker.full_name }}</strong></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container mt-5 mb-5">
+  <div class="row">
+    
+    <!-- Sidebar -->
+    <div class="col-lg-3 mb-4">
+      <div class="card shadow-lg border-0 rounded-4 p-4 sticky-top" style="top: 20px;">
+        <h5 class="fw-bold mb-3 text-primary">Navigation</h5>
+        <ul class="nav flex-column">
+          <li class="nav-item mb-1">
+            <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary active-link" href="{% url 'job:postjob' %}">
+              <i class="icon-briefcase me-2"></i> Post Job
+            </a>
+          </li>
+          <li class="nav-item mb-1">
+            <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary" href="{% url 'job:joblist' %}">
+              <i class="icon-list me-2"></i> Job Details
+            </a>
+          </li>
+          <li class="nav-item mb-1">
+            <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary" href="{% url 'recruiter:view_applications' %}">
+              <i class="icon-file-text-o me-2"></i> View Applications
+            </a>
+          </li>
+          <li class="nav-item mb-1">
+            <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary" href="{% url 'recruiter:logout' %}">
+              <i class="icon-sign-out me-2"></i> Logout
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="col-lg-9 mb-4">
+      <div class="card shadow-sm p-4 rounded-4">
+        <a href="{% url 'recruiter:view_applications' %}" class="btn btn-secondary mb-2" style="width: 100px;">&larr; Back</a>
+
+        <!-- Job Title  -->
+<a href="{% url 'job:job_detail' application.job.id %}" class="text-decoration-none">
+  <h3 class="mb-4" style="color: black;">
+    Job Position Applied For: {{ application.job.title|capfirst }}
+  </h3>
+</a>
+
+        <!-- Top Section: Profile Picture + Basic Info -->
+        <div class="d-flex flex-wrap align-items-center mb-4">
+          <div class="me-4 mb-3">
+            {% if application.job_seeker.profile.profile_picture %}
+              <img src="{{ application.job_seeker.profile.profile_picture.url }}" class="rounded-circle" width="120" height="120" alt="Profile Picture">
+            {% else %}
+              <img src="{% static 'images/profile_placeholder.png' %}" class="rounded-circle" width="120" height="120" alt="Profile Picture">
+            {% endif %}
+          </div>
+          <div class="flex-grow-1" style="margin-left: 50px;">
+            <p class="mb-1"><strong>Name:</strong> {{ application.job_seeker.full_name }}</p>
+            <p class="mb-1"><strong>Email:</strong> {{ application.job_seeker.email }}</p>
+            <p class="mb-1"><strong>Phone:</strong> {{ application.phone_number }}</p>
+            <p class="mb-1"><strong>Status:</strong> {{ application.status }}</p>
+          </div>
+        </div>
+
+        <hr>
+
+        <!-- Personal Details -->
+        <h5 class="mb-3">Personal Details</h5>
+        <p class="mb-1"><strong>Date of Birth:</strong> {{ application.job_seeker.profile.dob }}</p>
+        <p class="mb-1"><strong>Gender:</strong> {{ application.job_seeker.profile.gender }}</p>
+        <p class="mb-1"><strong>Address:</strong> {{ application.job_seeker.profile.address }}</p>
+
+        <hr>
+
+        <!-- Education & Certifications -->
+        <h5 class="mb-3">Education & Certifications</h5>
+        <p class="mb-1"><strong>Education:</strong> {{ application.job_seeker.profile.education }}</p>
+        <p class="mb-1"><strong>Certifications:</strong> {{ application.job_seeker.profile.certifications }}</p>
+
+        <hr>
+
+        <!-- Resume & Bio -->
+        <h5 class="mb-3">Resume & Bio</h5>
+        <p class="mb-1">
+          <strong>Resume:</strong>
+          {% if application.job_seeker.profile.resume %}
+            <a href="{{ application.job_seeker.profile.resume.url }}" target="_blank">Download</a>
+          {% else %} N/A {% endif %}
+        </p>
+        <p class="mb-1"><strong>Bio:</strong> {{ application.job_seeker.profile.bio }}</p>
+
+        <hr>
+
+        <!-- Skills & Links -->
+        <h5 class="mb-3">Skills & Links</h5>
+        <p class="mb-1"><strong>Skills:</strong> {{ application.job_seeker.profile.skills }}</p>
+        <p class="mb-1"><strong>LinkedIn:</strong>
+          {% if application.job_seeker.profile.linkedin %}
+            <a href="{{ application.job_seeker.profile.linkedin }}" target="_blank">{{ application.job_seeker.profile.linkedin }}</a>
+          {% else %} N/A {% endif %}
+        </p>
+        <p class="mb-1"><strong>GitHub:</strong>
+          {% if application.job_seeker.profile.github %}
+            <a href="{{ application.job_seeker.profile.github }}" target="_blank">{{ application.job_seeker.profile.github }}</a>
+          {% else %} N/A {% endif %}
+        </p>
+
+        <hr>
+
+        <!-- Portfolio & Experience -->
+        <h5 class="mb-3">Portfolio & Experience</h5>
+        <p class="mb-1"><strong>Portfolio:</strong>
+          {% if application.job_seeker.profile.portfolio %}
+            <a href="{{ application.job_seeker.profile.portfolio }}" target="_blank">{{ application.job_seeker.profile.portfolio }}</a>
+          {% else %} N/A {% endif %}
+        </p>
+        <p class="mb-1"><strong>Experience:</strong> {{ application.job_seeker.profile.experience }}</p>
+
+        <hr>
+
+        <!-- Application Details -->
+        <h5 class="mb-3">Application Details</h5>
+        <p class="mb-1"><strong>Cover Letter:</strong> {{ application.cover_letter }}</p>
+        <p class="mb-1"><strong>Applied On:</strong> {{ application.applied_on|date:"Y-m-d H:i" }}</p>
+
+      </div>
+    </div>
+
+    <!-- Recruiter Notes & Status Card -->
+    <div class="col-lg-9">
+      <div class="card shadow-sm p-4 rounded-4">
+
+        <h5 class="mb-3 text-primary">Recruiter Notes & Status</h5>
+        <form method="POST" action="{% url 'recruiter:update_application_status' application.id %}">
+          {% csrf_token %}
+
+          <div class="mb-3">
+            <label for="recruiter_notes" class="form-label"><strong>Notes:</strong></label>
+            <textarea name="recruiter_notes" id="recruiter_notes" class="form-control" rows="4">{{ application.recruiter_notes }}</textarea>
+          </div>
+
+          <div class="mb-3">
+            <label for="status" class="form-label"><strong>Status:</strong></label>
+            <select name="status" id="status" class="form-select">
+              <option value="Pending" {% if application.status == "Pending" %}selected{% endif %}>Pending</option>
+              <option value="Shortlisted" {% if application.status == "Shortlisted" %}selected{% endif %}>Shortlisted</option>
+              <option value="Rejected" {% if application.status == "Rejected" %}selected{% endif %}>Rejected</option>
+              <option value="Interview" {% if application.status == "Interview" %}selected{% endif %}>Interview</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-success">Send to Users</button>
+          <a href="{% url 'recruiter:view_applications' %}" class="btn btn-secondary ms-2">Back to Applications</a>
+        </form>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
