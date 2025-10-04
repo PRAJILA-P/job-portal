@@ -13,25 +13,25 @@
               <li class="has-children">
                 <a href="">Job Listings</a>
                 <ul class="dropdown">
-                  <li><a href="">Job Single</a></li>
+                  <li><a href="{% url 'recruiter:login' %}">Job Single</a></li>
                   <li><a href="{% url 'recruiter:login' %}">Post a Job</a></li>
                 </ul>
               </li>
               <li class="has-children">
                 <a href="">Pages</a>
                 <ul class="dropdown">
-                  <li><a href="">Services</a></li>
-                  <li><a href="">Service Single</a></li>
-                  <li><a href="">Blog Single</a></li>
-                  <li><a href="">Portfolio</a></li>
-                  <li><a href="">Portfolio Single</a></li>
-                  <li><a href="">Testimonials</a></li>
-                  <li><a href="">Frequently Ask Questions</a></li>
-                  <li><a href="">Gallery</a></li>
+                  <li><a href="{% url 'user:service' %}">Services</a></li>
+                  <li><a href="{% url 'user:service' %}">Service Single</a></li>
+                  <!-- <li><a href="">Blog Single</a></li> -->
+                  <!-- <li><a href="">Portfolio</a></li> -->
+                  <!-- <li><a href="">Portfolio Single</a></li> -->
+                  <li><a href="{% url 'user:testimonials' %}">Testimonials</a></li>
+                  <li><a href="{% url 'user:faq' %}">Frequently Ask Questions</a></li>
+                  <!-- <li><a href="">Gallery</a></li> -->
                 </ul>
               </li>
-              <li><a href="">Blog</a></li>
-              <li><a href="">Contact</a></li>
+              <li><a href="{% url 'user:blog' %}">Blog</a></li>
+              <li><a href="{% url 'user:contact' %}">Contact</a></li>
 
 
 

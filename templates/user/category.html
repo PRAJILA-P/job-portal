@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="section-hero overlay inner-page bg-image d-flex align-items-center"
+         style="background: url('{% static "images/hero_1.jpg" %}');
+                min-height: 250px; background-size: cover; background-position: center;">
+  <div class="container text-center">
+    <h1 class="text-white fw-bold display-5 mb-3">Available Jobs</h1>
+    <div class="custom-breadcrumbs">
+      <a href="{% url 'user:account' %}" class="text-white-50 text-decoration-none">Dashboard</a>
+      <span class="mx-2 text-white-50">/</span>
+      <span class="text-white fw-semibold">Jobs</span>
+    </div>
+  </div>
+</section>
+
+<!-- Category Header -->
+<section class="py-5 bg-light text-center">
+  <div class="container">
+    <h2 class="fw-bold text-success">{{ category.name }}</h2>
+    <p class="text-muted">Browse jobs available in {{ category.name }}</p>
+  </div>
+</section>
+
+<!-- Job List -->
+<section class="py-5">
+  <div class="container">
+    {% if jobs %}
+      <div class="row">
+        {% for job in jobs %}
+          <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm border-0">
+              
+              <div class="card-body d-flex flex-column">
+
+                <!-- Logo + Job Title & Company Row -->
+                <div class="d-flex align-items-center mb-3">
+                  
+                  <!-- Company Logo -->
+                  {% if job.recruiter.profile.logo %}
+                    <img src="{{ job.recruiter.profile.logo.url }}" 
+                         alt="Company Logo" 
+                         class="rounded-circle shadow-sm" 
+                         style="width: 50px; height: 50px; object-fit: cover;">
+                  {% else %}
+                    <div class="bg-light rounded-circle d-flex align-items-center justify-content-center shadow-sm" 
+                         style="width: 50px; height: 50px;">
+                      <i class="fas fa-building text-dark fs-5"></i>
+                    </div>
+                  {% endif %}
+
+                  <!-- Job Title & Company Info -->
+                  <div class="ms-3">
+                    <h5 class="card-title mb-1">{{ job.title }}</h5>
+                    <p class="text-muted small mb-0">{{ job.recruiter.company_name }} • {{ job.location }}</p>
+                  </div>
+                </div>
+
+                <!-- Job Description (truncated) -->
+                <p class="card-text">
+                  {{ job.description|truncatewords:20 }}
+                </p>
+
+                <!-- Job Type & Salary -->
+                <p class="mb-1"><strong>Job Type:</strong> {{ job.get_job_type_display }}</p>
+                {% if job.salary %}
+                  <p><strong>Salary:</strong> ₹{{ job.salary }}</p>
+                {% endif %}
+
+                <!-- View Details Button -->
+                <a href="{% url 'user:job_detail' job.id %}" class="btn btn-success mt-auto">
+                  View Details
+                </a>
+              </div>
+
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="text-center">
+        <h5 class="text-muted">No jobs available in this category.</h5>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}

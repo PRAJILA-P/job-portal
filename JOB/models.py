@@ -1,6 +1,7 @@
 from django.db import models
 from RECRUITER.models import RecruiterRegister
 from USER.models import JobSeeker
+from CUSTOM_ADMIN.models import Category
 # Create your models here.
 
 
@@ -40,6 +41,7 @@ class Job(models.Model):
     posted_at = models.DateTimeField(auto_now_add=True)
     deadline = models.DateField(blank=True, null=True)  # application deadline
     is_active = models.BooleanField(default=True)  # recruiter can deactivate job
+    categories = models.ManyToManyField(Category, related_name="jobs", blank=True)
 
     def __str__(self):
         return f"{self.title} at {self.recruiter.company_name}"

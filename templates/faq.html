@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <!-- HOME -->
+    <section class="section-hero overlay inner-page bg-image" style="background-image: url('images/hero_1.jpg');" id="home-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-7">
+            <h1 class="text-white font-weight-bold">Frequently Ask Questions</h1>
+            <div class="custom-breadcrumbs">
+              <a href="{% url 'user:index' %}">Home</a> <span class="mx-2 slash">/</span>
+              <span class="text-white"><strong>FAQ</strong></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+   
+
+   
+    <section class="site-section" id="accordion">
+      <div class="container">
+        
+        <div class="row accordion justify-content-center block__76208">
+          <div class="col-lg-6">
+            <img src="{% static 'images/sq_img_8.jpg' %}" alt="Image" class="img-fluid rounded">
+          </div>
+          <div class="col-lg-5 ml-auto">
+            <div class="accordion-item">
+              <h3 class="mb-0 heading">
+                <a class="btn-block h4" data-toggle="collapse" href="#collapseFive" role="button" aria-expanded="true" aria-controls="collapseFive">What is the name of your company<span class="icon"></span></a>
+              </h3>
+              <div id="collapseFive" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="body-text">
+                  <p>The name of our company is Jobzy. We are a leader in online recruitment and career services, dedicated to seamlessly connecting job seekers with their ideal roles and empowering companies to build their dream teams. Our flagship platform, Jobzy Talent Match, uses advanced AI and machine learning to match candidates to positions based not just on keywords, but on skills, culture fit, and career goals. With over 10 million job listings and a rapidly growing user base across North America and Europe, we are the trusted partner for professionals and employers worldwide.</p></div>
+              </div>
+            </div> <!-- .accordion-item -->
+
+            <div class="accordion-item">
+              <h3 class="mb-0 heading">
+                <a class="btn-block h4" data-toggle="collapse" href="#collapseSix" role="button" aria-expanded="false" aria-controls="collapseSix">How much pay for 3  months?<span class="icon"></span></a>
+              </h3>
+              <div id="collapseSix" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="body-text">
+                 <p>A three-month subscription to our Jobzy Pro Talent Search costs $599. This includes a 15% discount compared to the month-to-month rate, giving you full access to premium features like unlimited profile views, direct candidate messaging, and advanced filtering tools. Please visit our [Pricing Page](link to pricing page) for a detailed breakdown of all available plans.</p></div>
+              </div>
+            </div> <!-- .accordion-item -->
+
+            <div class="accordion-item">
+              <h3 class="mb-0 heading">
+                <a class="btn-block h4" data-toggle="collapse" href="#collapseSeven" role="button" aria-expanded="false" aria-controls="collapseSeven">Do I need to register?  <span class="icon"></span></a>
+              </h3>
+              <div id="collapseSeven" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="body-text">
+                  <p>Yes, you need to register to access the full range of our services. Job seekers must register to apply for jobs and save your preferred searches, while employers must register to post vacancies and access candidate profiles. Registration is quick, free for job seekers, and only requires a valid email address and a password.</p></div>
+              </div>
+            </div> <!-- .accordion-item -->
+
+            <div class="accordion-item">
+              <h3 class="mb-0 heading">
+                <a class="btn-block h4" data-toggle="collapse" href="#collapseEight" role="button" aria-expanded="false" aria-controls="collapseEight">Who should I contact in case of support.<span class="icon"></span></a>
+              </h3>
+              <div id="collapseEight" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="body-text">
+                  <p>For all support inquiries related to Jobzy, you have a few options:
+
+Email: Send an email to our dedicated support team at support@jobzy.com. We aim to respond within 24 hours.
+
+Live Chat: Visit our website and click the "Chat Now" icon in the bottom right corner for real-time assistance during our business hours (Monday-Friday, 9 AM - 5 PM EST).
+
+Help Center: Check out our comprehensive [Jobzy Help Center](link to help center) which contains articles, video tutorials, and guides for all platform features.</p></div>
+              </div>
+            </div> <!-- .accordion-item -->
+
+          </div>
+
+          
+        </div>
+      </div>
+    </section>
+
+    <section class="site-section bg-light">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-12 text-center" data-aos="fade">
+            <h2 class="section-title mb-3">Happy Candidates Says</h2>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="block__87154 bg-white rounded">
+              <blockquote>
+                <p>&ldquo;Jobzy changed my career path. I spent months applying with zero luck, but their AI match system connected me with an amazing role that was exactly the right fit for my skills and company culture. The whole process was fast, professional.&rdquo;</p>
+              </blockquote>
+              <div class="block__91147 d-flex align-items-center">
+                <figure class="mr-4"><img src="{% static 'images/person_1.jpg' %}" alt="Image" class="img-fluid"></figure>
+                <div>
+                  <h3>Elisabeth Smith</h3>
+                  <span class="position">Creative Director</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="block__87154 bg-white rounded">
+              <blockquote>
+                <p>&ldquo;I found my dream job in under a month! The quality of the listings on Jobzy is fantastic, and the tools they provide made tracking my applications stress-free. I recommend this platform to anyone serious about taking the next step in their career.&rdquo;</p>
+              </blockquote>
+              <div class="block__91147 d-flex align-items-center">
+                <figure class="mr-4"><img src="{% static 'images/person_2.jpg' %}" alt="Image" class="img-fluid"></figure>
+                <div>
+                  <h3>Chris Peter</h3>
+                  <span class="position">Web Designer</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </section>
+  
+  
+  </div>
+
+    <!-- SCRIPTS -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/isotope.pkgd.min.js"></script>
+    <script src="js/stickyfill.min.js"></script>
+    <script src="js/jquery.fancybox.min.js"></script>
+    <script src="js/jquery.easing.1.3.js"></script>
+    
+    <script src="js/jquery.waypoints.min.js"></script>
+    <script src="js/jquery.animateNumber.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/quill.min.js"></script>
+    
+    
+    <script src="js/bootstrap-select.min.js"></script>
+    
+    <script src="js/custom.js"></script>
+   
+   
+     
+  </body>
+</html>
+
+
+{% endblock %}

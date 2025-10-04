@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from USER.forms import JobSeekerForm, JobSeekerProfileForm
 from JOB.models import Job, JobApplication
+from CUSTOM_ADMIN.models import Category
 from .models import JobSeeker, JobSeekerProfile
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import logout
@@ -116,6 +117,7 @@ def index(request):
     query = request.GET.get('query', '')       # job title or company name
     location = request.GET.get('location', '') # location
     job_type = request.GET.get('job_type', '') # job type
+    category_slug = request.GET.get('category', '') # category filter
 
     # Start with active jobs
     job_list = Job.objects.filter(is_active=True).order_by('-id')
@@ -130,9 +132,16 @@ def index(request):
     if location:
         job_list = job_list.filter(location__icontains=location)
 
-    # Filter by job type (this works now because we use the database value)
+    # Filter by job type
     if job_type:
         job_list = job_list.filter(job_type=job_type)
+
+    # Filter by category
+    if category_slug:
+        category = get_object_or_404(Category, slug=category_slug)
+        job_list = job_list.filter(category=category)
+    else:
+        category = None
 
     # Pagination
     paginator = Paginator(job_list, 5)
@@ -142,14 +151,17 @@ def index(request):
     # Dropdown data
     job_types_choices = Job._meta.get_field('job_type').choices
     locations = Job.objects.values_list('location', flat=True).distinct()
+    categories = Category.objects.all()
 
     context = {
         'jobs': page_obj,
         'locations': locations,
         'job_types_choices': job_types_choices,
+        'categories': categories,
         'selected_query': query,
         'selected_location': location,
         'selected_job_type': job_type,
+        'selected_category': category,
     }
 
     return render(request, 'user/home.html', context)
@@ -292,8 +304,12 @@ def edit_profile(request):
 
 
 def view_jobs(request):
-    jobs=Job.objects.filter(is_active=True).order_by('-posted_at')
-    return render(request,'user/view_job.html',{'jobs':jobs})
+    jobs = Job.objects.filter(is_active=True).order_by('-posted_at')
+    paginator = Paginator(jobs, 6)  # 6 jobs per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'user/view_job.html', {'page_obj': page_obj})
 
 def job_detail(request, job_id):
     job = get_object_or_404(Job, id=job_id, is_active=True)
@@ -320,3 +336,35 @@ def application_detail(request, pk):
     application = get_object_or_404(JobApplication, pk=pk, job_seeker=jobseeker)
 
     return render(request, 'user/application_details.html', {'application': application})
+
+
+def category_list(request):
+    categories = Category.objects.all()
+    return render(request, "jobs/category_list.html", {"categories": categories})
+
+
+def jobs_by_category(request, slug):
+    category = get_object_or_404(Category, slug=slug)
+    jobs = Job.objects.filter(categories=category, is_active=True).order_by('-id')  # ✅ use 'categories'
+
+    context = {
+        'category': category,
+        'jobs': jobs,
+    }
+    return render(request, 'user/category.html', context)
+
+
+def service(request):
+    return render(request,'service.html')
+
+def faq(request):
+    return render(request,'faq.html')
+
+def testimonials(request):
+    return render(request,'testimonials.html')
+
+def blog(request):
+    return render(request,'blog.html')
+
+def contact(request):
+    return render(request,'contact.html')

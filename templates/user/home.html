@@ -15,6 +15,14 @@
           <h1 class="text-white font-weight-bold">The Easiest Way To Get Your Dream Job</h1>
           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate est, consequuntur perferendis.</p>
         </div>
+       <!-- Add this anywhere in your template, usually inside <body> -->
+<a href="{% url 'chat:room' room_name='general' %}" 
+   class="btn btn-warning join-chat-btn">
+   Join Live Chat
+</a>
+
+
+
         <form method="GET" action="{% url 'user:index' %}" class="search-jobs-form">
   <div class="row mb-5">
     <!-- Job title input -->
@@ -256,92 +264,29 @@
   </div>
 </section>
 
+
 <section class="explore-category py-5">
   <div class="container">
-    <h2 class="text-center mb-5">Explore By Category</h2>
-    <div class="row">
-      <!-- Category Card -->
+  <h2 class="text-center mb-5">Explore By Category</h2>
+  <div class="row">
+    {% for category in categories %}
       <div class="col-md-3 col-sm-6 mb-4">
         <div class="category-card text-center p-4 shadow-sm h-100">
-          <div class="icon mb-3">
-            <i class="fa fa-bullhorn fa-2x text-success"></i>
-          </div>
-          <h5 class="mb-2">Marketing</h5>
-          <p class="text-success mb-0"><a href="#">123 Vacancy</a></p>
+          <a href="{% url 'user:jobs_by_category' category.slug %}">
+            <div class="icon mb-3">
+              <i class="{{ category.icon_class }} fa-2x text-success"></i>
+            </div>
+            <h5 class="mb-2">{{ category.name }}</h5>
+            <p class="text-success mb-0">
+              {{ category.jobs.count }} Vacancy
+            </p>
+          </a>
         </div>
       </div>
-
-      <div class="col-md-3 col-sm-6 mb-4">
-        <div class="category-card text-center p-4 shadow-sm h-100">
-          <div class="icon mb-3">
-            <i class="fa fa-headset fa-2x text-success"></i>
-          </div>
-          <h5 class="mb-2">Customer Service</h5>
-          <p class="text-success mb-0"><a href="#">123 Vacancy</a></p>
-        </div>
-      </div>
-
-      <div class="col-md-3 col-sm-6 mb-4">
-        <div class="category-card text-center p-4 shadow-sm h-100">
-          <div class="icon mb-3">
-            <i class="fa fa-user-tie fa-2x text-success"></i>
-          </div>
-          <h5 class="mb-2">Human Resource</h5>
-          <p class="text-success mb-0"><a href="#">123 Vacancy</a></p>
-        </div>
-      </div>
-
-      <div class="col-md-3 col-sm-6 mb-4">
-        <div class="category-card text-center p-4 shadow-sm h-100">
-          <div class="icon mb-3">
-            <i class="fa fa-tasks fa-2x text-success"></i>
-          </div>
-          <h5 class="mb-2">Project Management</h5>
-          <p class="text-success mb-0"><a href="#">123 Vacancy</a></p>
-        </div>
-      </div>
-
-      <div class="col-md-3 col-sm-6 mb-4">
-        <div class="category-card text-center p-4 shadow-sm h-100">
-          <div class="icon mb-3">
-            <i class="fa fa-chart-line fa-2x text-success"></i>
-          </div>
-          <h5 class="mb-2">Business Development</h5>
-          <p class="text-success mb-0"><a href="#">123 Vacancy</a></p>
-        </div>
-      </div>
-
-      <div class="col-md-3 col-sm-6 mb-4">
-        <div class="category-card text-center p-4 shadow-sm h-100">
-          <div class="icon mb-3">
-            <i class="fa fa-handshake fa-2x text-success"></i>
-          </div>
-          <h5 class="mb-2">Sales & Communication</h5>
-          <p class="text-success mb-0"><a href="#">123 Vacancy</a></p>
-        </div>
-      </div>
-
-      <div class="col-md-3 col-sm-6 mb-4">
-        <div class="category-card text-center p-4 shadow-sm h-100">
-          <div class="icon mb-3">
-            <i class="fa fa-book-open fa-2x text-success"></i>
-          </div>
-          <h5 class="mb-2">Teaching & Education</h5>
-          <p class="text-success mb-0"><a href="#">123 Vacancy</a></p>
-        </div>
-      </div>
-
-      <div class="col-md-3 col-sm-6 mb-4">
-        <div class="category-card text-center p-4 shadow-sm h-100">
-          <div class="icon mb-3">
-            <i class="fa fa-drafting-compass fa-2x text-success"></i>
-          </div>
-          <h5 class="mb-2">Design & Creative</h5>
-          <p class="text-success mb-0"><a href="#">123 Vacancy</a></p>
-        </div>
-      </div>
-    </div>
+    {% endfor %}
   </div>
+</div>
+
 </section>
 
 
@@ -386,6 +331,16 @@
   color: #28a745;
   font-weight: 500;
 }
+/* Add this in your CSS file or inside <style> tag */
+.join-chat-btn {
+    position: fixed;       /* fixed relative to the viewport */
+    bottom: 20px;          /* distance from bottom */
+    right: 20px;           /* distance from right */
+    z-index: 1000;         /* ensure it’s above other elements */
+    border-radius: 50px;   /* optional: make it rounded */
+    padding: 12px 20px;    /* optional: size */
+}
+
 </style>
 
 <!-- FontAwesome CDN (works without account) -->

@@ -26,6 +26,8 @@ urlpatterns = [
     path('',include("USER.urls")),
     path('recruiter/',include("RECRUITER.urls")),
     path('job/',include("JOB.urls")),
+    path("chat/", include("chat.urls")), 
+    # path('custom_admin/',include("CUSTOM_ADMIN.urls"),
     
 ]
 

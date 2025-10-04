@@ -22,7 +22,14 @@ urlpatterns = [
     path("applications/<int:pk>/", views.application_detail, name="application_detail"),
 
     # path('search/', views.job_search, name='job_search'),
+    path("categories/", views.category_list, name="category_list"),
+    path("categories/<slug:slug>/", views.jobs_by_category, name="jobs_by_category"),
 
 
+    path('service/',views.service,name="service"),
+    path('faq/',views.faq,name="faq"),
+    path('testimonials/',views.testimonials,name="testimonials"),
+    path('blog/',views.blog,name="blog"),
+    path('contact/',views.contact,name="contact"),
 ]
     

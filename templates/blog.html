@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <section class="section-hero overlay inner-page bg-image" style="background-image: url('{% static 'images/hero_1.jpg' %}');" id="home-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-7">
+            <h1 class="text-white font-weight-bold">Jobzy Career Insights</h1>
+            <div class="custom-breadcrumbs">
+              <a href="{% url 'user:index' %}">Home</a> <span class="mx-2 slash">/</span>
+              <span class="text-white"><strong>Blog</strong></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="site-section">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-8 blog-content">
+            
+            <h2 class="mb-5">Latest Articles</h2>
+
+            <div class="post-entry d-block d-lg-flex">
+              <div class="col-lg-5 col-md-12">
+                <a href="single.html" class="mb-4 d-block"><img src="{% static 'images/sq_img_3.jpg' %}" alt="Image" class="img-fluid rounded"></a>
+              </div>
+              <div class="col-lg-7 col-md-12">
+                <span class="date">October 1, 2025 &bullet; By Jobzy Team</span>
+                <h2><a href="single.html">5 Essential Soft Skills Every Hiring Manager Looks For</a></h2>
+                <p>The job market is shifting. Learn why communication, teamwork, and resilience are now more critical than technical expertise for landing your dream role.</p>
+                <p class="mt-4"><a href="single.html" class="text-primary">Read More...</a></p>
+              </div>
+            </div>
+
+            <div class="post-entry d-block d-lg-flex">
+              <div class="col-lg-5 col-md-12">
+                <a href="single.html" class="mb-4 d-block"><img src="{% static 'images/sq_img_6.jpg' %}" alt="Image" class="img-fluid rounded"></a>
+              </div>
+              <div class="col-lg-7 col-md-12">
+                <span class="date">September 25, 2025 &bullet; By Aaron Kim</span>
+                <h2><a href="single.html">Mastering the Remote Interview: Tips to Ace Your Video Call</a></h2>
+                <p>Your guide to successful remote interviewing, from setting up the perfect background to handling technical glitches and projecting confidence on screen.</p>
+                <p class="mt-4"><a href="single.html" class="text-primary">Read More...</a></p>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-12">
+                <div class="custom-pagination">
+                  <span>1</span>
+                  <a href="#">2</a>
+                  <a href="#">3</a>
+                  <a href="#">4</a>
+                  <a href="#">></a>
+                </div>
+              </div>
+            </div>
+
+          </div> 
+          <div class="col-lg-4 sidebar">
+
+            <div class="sidebar-box">
+              <form action="#" class="search-form">
+                <div class="form-group">
+                  <span class="icon-search2"></span>
+                  <input type="text" class="form-control" placeholder="Type a keyword and hit enter">
+                </div>
+              </form>
+            </div>
+
+            <div class="sidebar-box">
+              <h3 class="heading">Categories</h3>
+              <ul class="categories">
+                <li><a href="#">Interview Tips <span>(12)</span></a></li>
+                <li><a href="#">Resume & CV <span>(22)</span></a></li>
+                <li><a href="#">Industry News <span>(37)</span></a></li>
+                <li><a href="#">Salary & Negotiation <span>(4)</span></a></li>
+                <li><a href="#">Jobzy Platform Guide <span>(9)</span></a></li>
+              </ul>
+            </div>
+
+            <div class="sidebar-box">
+              <h3 class="heading">Tags</h3>
+              <ul class="tags">
+                <li><a href="#">#AI</a></li>
+                <li><a href="#">#Tech</a></li>
+                <li><a href="#">#RemoteWork</a></li>
+                <li><a href="#">#CareerGrowth</a></li>
+                <li><a href="#">#Leadership</a></li>
+              </ul>
+            </div>
+
+          </div>
+          </div>
+      </div>
+    </section>
+
+{% endblock content %}

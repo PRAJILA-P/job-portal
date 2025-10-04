@@ -32,9 +32,13 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
+    'channels',
+    'chat',
     'JOB',
     'USER',
     'RECRUITER',
+    'CUSTOM_ADMIN',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -69,6 +73,16 @@ TEMPLATES = [
         },
     },
 ]
+
+ASGI_APPLICATION = 'jobportal_project.asgi.application'
+
+# Use Redis as channel layer (you need Redis running)
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
+
 
 WSGI_APPLICATION = 'jobportal_project.wsgi.application'
 

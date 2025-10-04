@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat Rooms</title>
+</head>
+<body>
+    <h2>Enter Chat Room</h2>
+    <form action="" method="get" onsubmit="event.preventDefault(); enterRoom();">
+        <input id="room-name-input" type="text" size="30" placeholder="Enter room name">
+        <button type="submit">Join</button>
+    </form>
+
+    <script>
+        function enterRoom() {
+            const roomName = document.getElementById("room-name-input").value;
+            if(roomName.trim() !== "") {
+                window.location.pathname = "/chat/" + roomName + "/";
+            }
+        }
+    </script>
+</body>
+</html>
