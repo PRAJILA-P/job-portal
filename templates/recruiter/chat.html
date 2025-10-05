@@ -3,26 +3,22 @@
 
 {% block content %}
 
-<!-- Hero Section -->
-<section class="section-hero overlay inner-page bg-image" 
-         style="background-image: url('{% static "images/hero_1.jpg" %}'); min-height: 250px;" id="home-section">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-7">
-        <h1 class="text-white font-weight-bold">Job Application</h1>
-        <div class="custom-breadcrumbs">
-          <a href="{% url 'recruiter:profile' %}" class="text-white-50 text-decoration-none">Dashboard</a> 
-          <span class="mx-2 text-white-50">/</span>
-          <a href="{% url 'job:joblist' %}" class="text-white-50 text-decoration-none">Jobs</a> 
-          <span class="mx-2 text-white-50">/</span>
-          <span class="text-white fw-semibold">Job Application</span>
+
+<section class="section-hero overlay inner-page bg-image" style='background-image: url("{% static "images/hero_1.jpg" %}");' id="home-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-7">
+            <h1 class="text-white font-weight-bold">MESSAGES</h1>
+            <div class="custom-breadcrumbs">
+              <a href="{% url 'recruiter:profile' %}">Dashboard</a> <span class="mx-2 slash">/</span>
+              <span class="text-white"><strong>Messages</strong></span>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- Main Content -->
+
 <section class="py-5" style="background-color: #f8f9fa;">
   <div class="container">
     <div class="row">
@@ -65,38 +61,24 @@
           </ul>
         </div>
       </div>
-
-      <!-- Job Applications / Main Column -->
+      <!-- Chat List -->
       <div class="col-lg-9">
         <div class="card shadow-sm border-0 rounded-4 p-4">
-          <h2 class="mb-4">Job Applications</h2>
+          <h2 class="fw-bold mb-4">Job Seekers Applied</h2>
 
-          {% if applications %}
-          <div class="row">
-            {% for app in applications %}
-            <div class="col-md-4 mb-4">
-  <div class="card shadow-sm h-100">
-    <div class="card-body">
-      <h5 class="card-title">{{ app.job.title }}</h5>
-      <p class="card-text"><strong>Applicant:</strong> {{ app.job_seeker.email }}</p>
-      <p class="card-text">
-  <strong>Status:</strong>
-  {% if app.status == "Applied" %}
-    Pending
-  {% else %}
-    {{ app.status }}
-  {% endif %}
-</p>
-
-      <a href="{% url 'recruiter:application_detail' app.id %}" class="btn btn-primary btn-sm">View Details</a>
-    </div>
-  </div>
-</div>
-
-            {% endfor %}
-          </div>
+          {% if recruiter_chat_rooms %}
+            <ul class="list-group">
+              {% for chat_room in recruiter_chat_rooms %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  {{ chat_room.job_seeker.full_name }}
+                  <a href="{% url 'chat:chat_room' chat_room.room_name %}">
+                    <button class="btn btn-primary btn-sm">Chat</button>
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
           {% else %}
-          <p class="text-center">No applications found for your jobs.</p>
+            <p class="text-muted">No job seekers have applied yet.</p>
           {% endif %}
 
         </div>
@@ -105,31 +87,5 @@
     </div>
   </div>
 </section>
-
-<!-- Sidebar Styles -->
-<style>
-  .sticky-top {
-    position: sticky;
-    top: 20px;
-  }
-
-  .hover-bg-primary:hover {
-    background-color: #f0f8ff;
-    transition: 0.3s ease-in-out;
-  }
-
-  .nav-link.active-link {
-    background-color: #89ba16;
-    color: white !important;
-  }
-
-  .nav-link i {
-    width: 20px;
-  }
-
-  .nav-link {
-    font-weight: 500;
-  }
-</style>
 
 {% endblock %}

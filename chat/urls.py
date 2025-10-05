@@ -1,10 +1,8 @@
-# chat/urls.py
 from django.urls import path
 from . import views
-
-app_name = 'chat'  # <-- add this line for namespace
+app_name = 'chat' 
 
 urlpatterns = [
-    path("", views.index, name="index"),          # optional, for chat home
-    path("<str:room_name>/", views.room, name="room"),  # name matches template
+    path('start/<int:recruiter_id>/', views.start_chat, name='start_chat'),
+    path('<str:room_name>/', views.chat_room, name='chat_room'),
 ]

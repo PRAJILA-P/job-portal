@@ -32,30 +32,39 @@
         <div class="card shadow-lg border-0 rounded-4 p-4 sticky-top" style="top: 20px;">
           <h5 class="fw-bold mb-3 text-primary">Navigation</h5>
           <ul class="nav flex-column">
-            <li class="nav-item mb-2">
-              <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary" href="{% url 'job:postjob' %}">
+            <li class="nav-item mb-1">
+              <a class="nav-link text-dark p-3 rounded-3 transition-ease-in hover-bg-primary active-link" 
+                 href="{% url 'job:postjob' %}">
                 <i class="icon-briefcase me-2"></i> Post Job
               </a>
             </li>
-            <li class="nav-item mb-2">
-              <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary " href="{% url 'job:joblist' %}">
+            <li class="nav-item mb-1">
+              <a class="nav-link text-dark p-3 rounded-3 transition-ease-in hover-bg-primary" 
+                 href="{% url 'job:joblist' %}">
                 <i class="icon-list me-2"></i> Job Details
               </a>
             </li>
-            <li class="nav-item mb-2">
-              <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary" href="{% url 'recruiter:view_applications' %}">
+            <li class="nav-item mb-1">
+              <a class="nav-link text-dark p-3 rounded-3 transition-ease-in hover-bg-primary" 
+                 href="{% url 'recruiter:view_applications' %}">
                 <i class="icon-file-text-o me-2"></i> View Applications
               </a>
             </li>
-            <li class="nav-item mb-2">
-              <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary" href="{% url 'recruiter:logout' %}">
+            <li class="nav-item mb-1">
+              <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary " 
+                 href="{% url 'recruiter:recruiter_chat' %}">
+                <i class="icon-comments me-2"></i> Messages
+              </a>
+            </li>
+            <li class="nav-item mb-1">
+              <a class="nav-link text-dark p-3 rounded-3 transition-ease-in hover-bg-primary" 
+                 href="{% url 'recruiter:logout' %}">
                 <i class="icon-sign-out me-2"></i> Logout
               </a>
             </li>
           </ul>
         </div>
       </div>
-
       <!-- Job Listings -->
       <div class="col-lg-9">
         <h2 class="mb-4">My Job Listings</h2>

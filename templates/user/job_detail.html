@@ -60,6 +60,8 @@
       <!-- Job Details Column -->
       <div class="col-lg-9">
         <div class="card shadow-sm border-0 rounded-4 p-4">
+          <!-- <a href="{% url 'chat:start_chat' job.recruiter.id %}" class="btn btn-primary">💬 Live Chat</a> -->
+
 
           <!-- Job Header -->
           <div class="d-flex align-items-center mb-4">
@@ -155,5 +157,22 @@
     </div>
   </div>
 </section>
+<!-- Live Chat Button -->
+<a href="{% url 'chat:start_chat' job.recruiter.id %}" 
+   class="btn btn-primary live-chat-btn">
+   💬 Live Chat
+</a>
+
+<style>
+.live-chat-btn {
+    position: fixed;
+    bottom: 40px;   /* distance from bottom of the screen */
+    right: 40px;    /* distance from right of the screen */
+    z-index: 9999;  /* ensures it stays above other content */
+    border-radius: 50px;  /* rounded button */
+    padding: 20px 25px;   /* button padding */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+</style>
 
 {% endblock %}

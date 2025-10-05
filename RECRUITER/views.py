@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, render,redirect,HttpResponse
 from django.contrib import messages
 
 from JOB.models import JobApplication
+from chat.models import ChatRoom
 
 from . models import RecruiterProfile, RecruiterRegister
 from django.contrib.auth.hashers import check_password
@@ -69,10 +70,11 @@ def profile(request):
 
     recruiter = get_object_or_404(RecruiterRegister, id=recruiter_id)
     profile = getattr(recruiter, 'profile', None)  # safe if profile exists
-
+    chat_rooms = ChatRoom.objects.filter(recruiter=recruiter)
     context = {
         'recruiter': recruiter,
-        'profile': profile
+        'profile': profile,
+        'recruiter_chat_rooms': chat_rooms
     }
     return render(request, 'recruiter/profile.html', context)
 
@@ -183,3 +185,21 @@ def update_application_status(request, application_id):
         return redirect('recruiter:application_detail', application_id=application.id)
 
     return redirect('recruiter:application_detail', application_id=application.id)
+
+
+def chat(request):
+    # Get the logged-in recruiter ID from session
+    recruiter_id = request.session.get('recruiter_id')
+    if not recruiter_id:
+        return redirect("recruiter:login")  # Redirect if not logged in
+
+    # Fetch the recruiter object
+    recruiter = get_object_or_404(RecruiterRegister, id=recruiter_id)
+    
+    # Get all chat rooms where this recruiter is assigned
+    recruiter_chat_rooms = ChatRoom.objects.filter(recruiter=recruiter).select_related('job_seeker')
+    
+    context = {
+        'recruiter_chat_rooms': recruiter_chat_rooms
+    }
+    return render(request, 'recruiter/chat.html', context)

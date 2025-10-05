@@ -21,4 +21,5 @@ urlpatterns = [
     path('application/<int:application_id>/', views.application_detail, name='application_detail'),
     path('application/<int:application_id>/update/', views.update_application_status, name='update_application_status'),
 
+    path('messages/', views.chat, name='recruiter_chat'),  
 ]

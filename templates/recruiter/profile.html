@@ -45,6 +45,12 @@
               </a>
             </li>
             <li class="nav-item mb-1">
+              <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary " 
+                 href="{% url 'recruiter:recruiter_chat' %}">
+                <i class="icon-comments me-2"></i> Messages
+              </a>
+            </li>
+            <li class="nav-item mb-1">
               <a class="nav-link text-dark p-3 rounded-3 transition-ease-in hover-bg-primary" 
                  href="{% url 'recruiter:logout' %}">
                 <i class="icon-sign-out me-2"></i> Logout
@@ -57,6 +63,7 @@
      <!-- Main Content -->
 <div class="col-lg-9">
   <div class="card shadow-lg border-0 rounded-4 p-5 transition-ease-in">
+
 
     <h2 class="mb-4 pb-3 border-bottom text-dark">
       <i class="icon-building me-2 text-primary"></i> 

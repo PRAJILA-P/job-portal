@@ -1,0 +1,176 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Live Chat</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+    }
+
+    .chat-wrapper {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      width: 100%;
+      background: #fff;
+      border-left: 3px solid #89ba16;
+      border-right: 3px solid #89ba16;
+    }
+
+    /* Header */
+    .chat-header {
+      flex: 0 0 auto;
+      background-color: #89ba16; /* keep this light green */
+      color: white;
+      padding: 15px 20px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 18px;
+    }
+
+    /* Chat body */
+    #chat-log {
+      flex: 1 1 auto;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background-color: #f7f9f7;
+    }
+
+    /* Message styling */
+    .message {
+      max-width: 70%;
+      padding: 12px 18px;
+      border-radius: 18px;
+      word-wrap: break-word;
+      line-height: 1.4;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .jobseeker {
+      align-self: flex-end;
+      background-color: #e3f9e5; /* soft pastel green */
+      color: #333;
+    }
+
+    .recruiter {
+      align-self: flex-start;
+      background-color: #d0e6ff; /* light blue (different from header) */
+      color: #222;
+    }
+
+    .sender-name {
+      font-weight: bold;
+      font-size: 0.9em;
+      margin-bottom: 4px;
+      display: block;
+      opacity: 0.9;
+    }
+
+    /* Input area */
+    .chat-input-container {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 15px 20px;
+      border-top: 2px solid #89ba16;
+      background-color: white;
+      position: sticky;
+      bottom: 0;
+    }
+
+    #chat-message-input {
+      flex: 1;
+      padding: 10px 15px;
+      border-radius: 25px;
+      border: 1px solid #ccc;
+      outline: none;
+      font-size: 15px;
+    }
+
+    #chat-message-submit {
+      padding: 10px 25px;
+      background-color: #89ba16;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    #chat-message-submit:hover {
+      background-color: #6fa20f;
+    }
+
+    /* Scrollbar styling */
+    #chat-log::-webkit-scrollbar {
+      width: 8px;
+    }
+    #chat-log::-webkit-scrollbar-thumb {
+      background: #ccc;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-wrapper">
+    <div class="chat-header">
+      Live Chat Room
+    </div>
+
+    <div id="chat-log"></div>
+
+    <div class="chat-input-container">
+      <input id="chat-message-input" type="text" placeholder="Type your message...">
+      <button id="chat-message-submit">Send</button>
+    </div>
+  </div>
+
+  <script>
+    const roomName = "{{ room_name }}";
+    const currentUserId = "{{ current_user_id }}";
+
+    const chatSocket = new WebSocket(
+        'ws://' + window.location.host + '/ws/chat/' + roomName + '/'
+    );
+
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        const chatLog = document.querySelector('#chat-log');
+
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message');
+        messageElement.classList.add(data.sender_type === 'jobseeker' ? 'jobseeker' : 'recruiter');
+        messageElement.innerHTML = `<span class="sender-name">${data.sender}</span>${data.message}`;
+        chatLog.appendChild(messageElement);
+        chatLog.scrollTop = chatLog.scrollHeight;
+    };
+
+    document.querySelector('#chat-message-submit').onclick = function() {
+        const messageInput = document.querySelector('#chat-message-input');
+        const message = messageInput.value;
+        if(message.trim() !== '') {
+            chatSocket.send(JSON.stringify({'message': message}));
+            messageInput.value = '';
+        }
+    };
+
+    document.querySelector('#chat-message-input').addEventListener("keypress", function(e) {
+        if(e.key === "Enter") {
+            document.querySelector('#chat-message-submit').click();
+        }
+    });
+  </script>
+</body>
+</html>
