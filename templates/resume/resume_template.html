@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ profile.user.full_name }} - Resume</title>
+    <style>
+        body {
+            font-family: 'Calibri', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #fff;
+            color: #222;
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #000;
+            padding: 20px 0;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            margin: 0;
+            font-weight: 700;
+            text-transform: lowercase;
+        }
+
+        .header p {
+            margin: 4px 0;
+            font-size: 15px;
+        }
+
+        .profile-pic {
+            position: absolute;
+            top: 10px;
+            right: 25px;
+        }
+
+        .profile-pic img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #000;
+        }
+
+        .section {
+            margin: 25px;
+        }
+
+        .section h3 {
+            font-size: 17px;
+            margin: 0 0 6px 0;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .section p {
+            font-size: 15px;
+            line-height: 1.5;
+            margin: 4px 0;
+        }
+
+        hr {
+            border: 0;
+            border-top: 1px solid #ccc;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+    {% if profile.profile_picture %}
+    <div class="profile-pic">
+        <img src="{{ profile.profile_picture.path }}" alt="Profile Picture">
+    </div>
+    {% endif %}
+
+    <div class="header">
+        <h1>{{ profile.user.full_name }}</h1>
+        <p>Email: {{ profile.user.email }} | Phone: {{ profile.user.phone }}</p>
+        {% if profile.address %}
+        <p>{{ profile.address }}</p>
+        {% endif %}
+    </div>
+
+    {% if profile.bio %}
+    <div class="section">
+        <h3>Profile Summary</h3>
+        <p>{{ profile.bio }}</p>
+    </div>
+    {% endif %}
+
+    {% if profile.education %}
+    <div class="section">
+        <h3>Education</h3>
+        <p>{{ profile.education }}</p>
+    </div>
+    {% endif %}
+
+    {% if profile.experience %}
+    <div class="section">
+        <h3>Experience</h3>
+        <p>{{ profile.experience }}</p>
+    </div>
+    {% endif %}
+
+    {% if profile.skills %}
+    <div class="section">
+        <h3>Skills</h3>
+        <p>{{ profile.skills }}</p>
+    </div>
+    {% endif %}
+
+    {% if profile.certifications %}
+    <div class="section">
+        <h3>Certifications</h3>
+        <p>{{ profile.certifications }}</p>
+    </div>
+    {% endif %}
+
+    {% with projects=profile.projects.all %}
+    {% if projects %}
+    <div class="section">
+        <h3>Projects</h3>
+        {% for project in projects %}
+            <p><strong>{{ project.title }}</strong></p>
+            <p>{{ project.description }}</p>
+            {% if project.technologies %}
+            <p><em>Technologies:</em> {{ project.technologies }}</p>
+            {% endif %}
+            {% if project.link %}
+            <p>Link: <a href="{{ project.link }}" target="_blank">{{ project.link }}</a></p>
+            {% endif %}
+            {% if not forloop.last %}<hr>{% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    {% if profile.linkedin or profile.github or profile.portfolio %}
+    <div class="section">
+        <h3>Links</h3>
+        {% if profile.linkedin %}<p>{{ profile.linkedin }}</p>{% endif %}
+        {% if profile.github %}<p>{{ profile.github }}</p>{% endif %}
+        {% if profile.portfolio %}<p>{{ profile.portfolio }}</p>{% endif %}
+    </div>
+    {% endif %}
+
+</body>
+</html>

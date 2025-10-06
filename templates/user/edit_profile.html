@@ -1,10 +1,79 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block content %}
 
+<!-- Hero Section -->
+<section class="section-hero overlay inner-page bg-image d-flex align-items-center"
+         style="background: url('{% static "images/hero_1.jpg" %}'); min-height: 250px; background-size: cover; background-position: center;">
+  <div class="container text-center">
+    <h1 class="text-white fw-bold display-5 mb-3">Available Jobs</h1>
+    <div class="custom-breadcrumbs">
+      <a href="{% url 'user:account' %}" class="text-white-50 text-decoration-none">Dashboard</a>
+      <span class="mx-2 text-white-50">/</span>
+      <span class="text-white fw-semibold">Jobs</span>
+    </div>
+  </div>
+</section>
+
+<!-- Main Section -->
 <section class="py-5" style="background-color: #f0f2f5;">
   <div class="container">
     <div class="row justify-content-center">
+
+      <!-- Sidebar Navigation -->
+      <div class="col-lg-3 mb-4">
+        <div class="card shadow-lg border-0 rounded-4 p-4 sticky-top" style="top: 20px;">
+          <h5 class="fw-bold mb-3 text-primary">Navigation</h5>
+          <ul class="nav flex-column">
+
+            <li class="nav-item mb-1">
+              <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary active-link" 
+                 href="{% url 'user:account' %}">
+                <i class="fa-solid fa-user me-2"></i> Profile
+              </a>
+            </li>
+
+            <li class="nav-item mb-1">
+              <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary active-link" 
+                 href="{% url 'user:addprofile' %}">
+                <i class="fa-solid fa-user-pen me-2"></i> Add Profile Details
+              </a>
+            </li>
+
+            <li class="nav-item mb-1">
+              <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary active-link" 
+                 href="{% url 'user:view_jobs' %}">
+                <i class="fa-solid fa-briefcase me-2"></i> View Jobs
+              </a>
+            </li>
+
+            <li class="nav-item mb-1">
+              <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary active-link" 
+                 href="{% url 'user:application_list' %}">
+                <i class="fa-solid fa-clipboard-list me-2"></i> Application Status
+              </a>
+            </li>  
+
+            <li class="nav-item mb-1">
+              <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary active-link" 
+                 href="{% url 'view_resume' %}">
+                <i class="fa-solid fa-file me-2"></i> Generate Resume
+              </a>
+            </li>
+
+            <li class="nav-item mb-1">
+              <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary" 
+                 href="{% url 'user:logout' %}">
+                <i class="fa-solid fa-right-from-bracket me-2"></i> Logout
+              </a>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+
+      <!-- Main Content -->
       <div class="col-lg-8">
         <div class="card shadow-lg border-0 rounded-4 p-5">
           <h3 class="mb-4 text-primary">Edit Profile</h3>
@@ -16,6 +85,7 @@
             {{ jobseeker_form.as_p }}
 
             <hr>
+
             <h5 class="mb-3 text-secondary">Detailed Info</h5>
             {{ profile_form.as_p }}
 
@@ -27,6 +97,7 @@
 
         </div>
       </div>
+
     </div>
   </div>
 </section>

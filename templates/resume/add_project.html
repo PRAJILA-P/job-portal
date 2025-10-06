@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="section-hero overlay inner-page bg-image" 
+         style='background-image: url("{% static "images/hero_1.jpg" %}"); min-height: 250px;'>
+  <div class="container">
+    <div class="row align-items-center justify-content-center">
+      <div class="col-md-7 text-center">
+        <h1 class="text-white font-weight-bold display-4 mb-0" 
+            style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">
+            Add Project
+        </h1>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="py-5" style="background-color: #f0f2f5;">
+  <div class="container">
+    <div class="row justify-content-center">
+      
+      <!-- Sidebar -->
+      <div class="col-lg-3 mb-4">
+        <div class="card shadow-lg border-0 rounded-4 p-4 sticky-top" style="top: 20px;">
+          <h5 class="fw-bold mb-3 text-primary">Navigation</h5>
+          <ul class="nav flex-column">
+            <li class="nav-item mb-1">
+              <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary active-link" href="{% url 'user:account' %}">
+                <i class="fa-solid fa-user" style="color: #000000;"></i> Profile
+              </a>
+            </li>
+            <li class="nav-item mb-1">
+              <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary active-link" href="{% url 'user:addprofile' %}">
+                <i class="icon-edit me-2"></i> Add Profile Details
+              </a>
+            </li>
+            <li class="nav-item mb-1">
+              <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary active-link" href="{% url 'user:view_jobs' %}">
+                <i class="icon-list me-2"></i> View Jobs
+              </a>
+            </li>
+            <li class="nav-item mb-1">
+              <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary active-link" href="{% url 'user:application_list' %}">
+                <i class="icon-list me-2"></i> Application Status
+              </a>
+            </li>  
+            <li class="nav-item mb-1">
+              <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary active-link" href="{% url 'view_resume' %}">
+                <i class="fa-solid fa-file" style="color: #000000;"></i> Generate Resume
+              </a>
+            </li>
+            <li class="nav-item mb-1">
+              <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary" href="{% url 'user:logout' %}">
+                <i class="icon-sign-out me-2"></i> Logout
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Project Form Section -->
+      <div class="col-lg-8">
+        <div class="card shadow-lg border-0 rounded-4 p-5 bg-white">
+          <h3 class="fw-bold text-primary mb-4">Add Your Project</h3>
+
+          <form method="POST" action="">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Project Title</label>
+              <input type="text" name="title" class="form-control rounded-3" placeholder="Enter project title" required>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Description</label>
+              <textarea name="description" class="form-control rounded-3" rows="4" placeholder="Describe your project" required></textarea>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Technologies Used</label>
+              <input type="text" name="technologies" class="form-control rounded-3" placeholder="e.g., Django, React, MySQL">
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Project Link (Optional)</label>
+              <input type="url" name="link" class="form-control rounded-3" placeholder="https://github.com/your-project">
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center">
+              <button type="submit" class="btn btn-primary px-4 py-2 rounded-3 fw-semibold">Save Project</button>
+              <a href="{% url 'view_resume' %}" class="btn btn-outline-secondary px-4 py-2 rounded-3">View Resume</a>
+            </div>
+          </form>
+        </div>
+
+        <!-- Show Added Projects -->
+        <!-- {% if projects %}
+        <div class="card shadow-sm border-0 rounded-4 p-4 mt-4">
+          <h5 class="fw-bold text-dark mb-3">Your Added Projects</h5>
+          {% for project in projects %}
+            <div class="border-bottom py-2 mb-2">
+              <h6 class="fw-bold text-primary mb-1">{{ project.title }}</h6>
+              <p class="mb-1 small">{{ project.description }}</p>
+              {% if project.technologies %}
+                <p class="mb-0"><strong>Tech:</strong> {{ project.technologies }}</p>
+              {% endif %}
+              {% if project.link %}
+                <a href="{{ project.link }}" target="_blank" class="text-decoration-none small text-secondary">View Project</a>
+              {% endif %}
+            </div>
+          {% empty %}
+            <p class="text-muted">No projects added yet.</p>
+          {% endfor %}
+        </div>
+        {% endif %} -->
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}
