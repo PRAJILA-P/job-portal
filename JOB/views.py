@@ -1,11 +1,12 @@
 from django.shortcuts import get_object_or_404, redirect, render
-
+from django.contrib import messages
 from JOB.models import Job, JobApplication
 from RECRUITER.models import RecruiterRegister
 from django.contrib.auth.decorators import login_required
 
 from USER.models import JobSeeker
-
+from django.core.mail import send_mail
+from django.conf import settings
 # Create your views here.
 
 def post_job(request):
@@ -86,10 +87,44 @@ def delete_job(request, job_id):
     
     return redirect('job:joblist')
 
+# def apply_job(request, job_id):
+    
+#     if 'jobseeker_id' not in request.session:
+#         return redirect('user:login')  # Redirect if not logged in
+
+#     try:
+#         job_seeker = JobSeeker.objects.get(id=request.session['jobseeker_id'])
+#     except JobSeeker.DoesNotExist:
+#         return redirect('user:login')
+
+#     job = get_object_or_404(Job, id=job_id)
+
+#     if request.method == "POST":
+#         phone_number = request.POST.get('phone_number')
+#         cover_letter = request.POST.get('cover_letter')
+
+#         # Create JobApplication
+#         JobApplication.objects.create(
+#             job_seeker=job_seeker,
+#             job=job,
+#             phone_number=phone_number,
+#             cover_letter=cover_letter,
+#             status='Applied'
+#         )
+
+#         return redirect('user:job_detail', job_id=job.id)  # Redirect to dashboard
+
+#     context = {
+#         'job': job,
+#         'job_seeker': job_seeker,
+#     }
+#     return render(request, 'user/apply_job.html', context)
+
+
+
 def apply_job(request, job_id):
-    # Manual authentication check
     if 'jobseeker_id' not in request.session:
-        return redirect('user:login')  # Redirect if not logged in
+        return redirect('user:login')
 
     try:
         job_seeker = JobSeeker.objects.get(id=request.session['jobseeker_id'])
@@ -97,12 +132,13 @@ def apply_job(request, job_id):
         return redirect('user:login')
 
     job = get_object_or_404(Job, id=job_id)
+    recruiter = job.recruiter  # Assuming Job model has ForeignKey to Recruiter
 
     if request.method == "POST":
         phone_number = request.POST.get('phone_number')
         cover_letter = request.POST.get('cover_letter')
 
-        # Create JobApplication
+        # ✅ Create JobApplication
         JobApplication.objects.create(
             job_seeker=job_seeker,
             job=job,
@@ -111,7 +147,38 @@ def apply_job(request, job_id):
             status='Applied'
         )
 
-        return redirect('user:job_detail', job_id=job.id)  # Redirect to dashboard
+        # ✅ Send email to Recruiter
+        subject = f"New Job Application for {job.title}"
+        message = f"""
+Hello {recruiter.company_name},
+
+You have received a new job application for your job posting: "{job.title}"
+
+Applicant Details:
+Name: {job_seeker.full_name}
+Email: {job_seeker.email}
+Phone: {phone_number}
+
+Cover Letter:
+{cover_letter}
+
+Please log in to your recruiter dashboard to review this application.
+
+Best Regards,
+Job Portal Team
+"""
+        from_email = settings.DEFAULT_FROM_EMAIL
+        recipient_list = [recruiter.email]
+
+        try:
+            send_mail(subject, message, from_email, recipient_list)
+        except Exception as e:
+            print("Email sending failed:", e)
+
+        # ✅ Show success message
+        messages.success(request, "Your application has been submitted successfully!")
+
+        return redirect('user:job_detail', job_id=job.id)
 
     context = {
         'job': job,

@@ -31,14 +31,20 @@
           <ul class="nav flex-column">
             <li class="nav-item mb-1">
               <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary active-link" 
-                 href="{% url 'user:addprofile' %}">
-                <i class="icon-edit me-2"></i> Add Profile
+                 href="{% url 'user:account' %}">
+                <i class="fa-solid fa-user" style="color: #000000;"></i>Profile
               </a>
             </li>
             <li class="nav-item mb-1">
               <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary active-link" 
+                 href="{% url 'user:addprofile' %}">
+                <i class="icon-edit me-2"></i> Add Profile Details
+              </a>
+            </li>
+             <li class="nav-item mb-1">
+              <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary active-link" 
                  href="{% url 'user:view_jobs' %}">
-                <i class="icon-list me-2"></i>View Jobs 
+                <i class="icon-list me-2"></i> View Jobs
               </a>
             </li>
             <li class="nav-item mb-1">
@@ -46,7 +52,18 @@
                  href="{% url 'user:application_list' %}">
                 <i class="icon-list me-2"></i> Application Status
               </a>
-            </li>
+            </li>  
+            <li class="nav-item mb-1">
+  <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary active-link" 
+     href="{% url 'view_resume' %}">
+     <i class="fa-solid fa-file" style="color: #000000;"></i>
+     Generate Resume
+  </a>
+</li>
+
+
+
+
             <li class="nav-item mb-1">
               <a class="nav-link text-dark p-3 rounded-3 hover-bg-primary" 
                  href="{% url 'user:logout' %}">
@@ -56,7 +73,6 @@
           </ul>
         </div>
       </div>
-
       <!-- Job Details Column -->
       <div class="col-lg-9">
         <div class="card shadow-sm border-0 rounded-4 p-4">
